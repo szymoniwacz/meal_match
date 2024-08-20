@@ -67,3 +67,5 @@ group :test do
 end
 
 gem "webpacker", "~> 5.4"
+
+gem "dotenv-rails", "~> 3.1"
