@@ -8,6 +8,7 @@ gem 'bootsnap', require: false
 gem 'dotenv-rails', '~> 3.1'
 gem "pg", "~> 1.1"
 gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
+gem 'rack-cors', '2.0.2'
 gem 'redis', '>= 4.0.1'
 gem 'tzinfo-data', platforms: %i[ windows jruby ]
 gem 'webpacker', '~> 5.4'
