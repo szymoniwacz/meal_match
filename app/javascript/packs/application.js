@@ -5,6 +5,7 @@ import { ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import Login from "../components/Login";
 import Registration from "../components/Registration";
+import UserLanding from "../components/UserLanding";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Registration />} />
+            <Route path="/user-landing" element={<UserLanding />} />
           </Routes>
         </Router>
       </ApolloProvider>

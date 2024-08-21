@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, gql } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const LOGIN_USER = gql`
@@ -18,17 +18,29 @@ const LOGIN_USER = gql`
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [loginUser, { data, error }] = useMutation(LOGIN_USER);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await loginUser({ variables: { email, password } });
+    const response = await loginUser({ variables: { email, password } });
+    if (response.data.loginUser.user) {
+      navigate("/user-landing", { state: { message: "Welcome back!" } });
+    } else if (response.data.loginUser.errors.length > 0) {
+      setErrorMessage(response.data.loginUser.errors.join(", "));
+    }
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
         <h2>Login</h2>
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email:</label>
@@ -48,18 +60,10 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary mt-3">Login</button>
+          <button type="submit" className="btn btn-primary mt-3">
+            Login
+          </button>
         </form>
-        {data && data.loginUser.errors.length > 0 && (
-          <div className="mt-3">
-            <h3>Errors</h3>
-            <ul>
-              {data.loginUser.errors.map((error) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
         <div className="mt-3">
           <Link to="/register">Go to Registration</Link>
         </div>
