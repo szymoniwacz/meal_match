@@ -8,6 +8,7 @@ gem 'bootsnap', require: false
 gem 'devise', '4.9.4'
 gem 'dotenv-rails', '~> 3.1'
 gem 'graphql', '2.3.5'
+gem 'jwt', '2.8.2'
 gem 'pg', '~> 1.1'
 gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 gem 'rack-cors', '2.0.2'
