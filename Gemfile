@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 ruby '3.3.3'
 
 gem 'bootsnap', require: false
+gem 'devise', '4.9.4'
 gem 'dotenv-rails', '~> 3.1'
 gem 'graphql', '2.3.5'
 gem 'pg', '~> 1.1'
