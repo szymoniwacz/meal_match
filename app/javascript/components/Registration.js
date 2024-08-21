@@ -19,17 +19,36 @@ const Registration = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [registerUser, { data, error }] = useMutation(REGISTER_USER);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await registerUser({ variables: { email, password, passwordConfirmation } });
+    const response = await registerUser({ variables: { email, password, passwordConfirmation } });
+    if (response.data.registerUser.user) {
+      setSuccessMessage("Registration successful! You can now log in.");
+      setErrorMessage(""); // Clear any previous error message
+    } else if (response.data.registerUser.errors.length > 0) {
+      setErrorMessage(response.data.registerUser.errors.join(", "));
+      setSuccessMessage(""); // Clear any previous success message
+    }
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
         <h2>Register</h2>
+        {successMessage && (
+          <div className="alert alert-success" role="alert">
+            {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email:</label>
@@ -58,18 +77,10 @@ const Registration = () => {
               onChange={(e) => setPasswordConfirmation(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary mt-3">Register</button>
+          <button type="submit" className="btn btn-primary mt-3">
+            Register
+          </button>
         </form>
-        {data && data.registerUser.errors.length > 0 && (
-          <div className="mt-3">
-            <h3>Errors</h3>
-            <ul>
-              {data.registerUser.errors.map((error) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
         <div className="mt-3">
           <Link to="/">Go to Login</Link>
         </div>
