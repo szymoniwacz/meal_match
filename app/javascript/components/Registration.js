@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useMutation, gql } from "@apollo/client";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState } from 'react';
+import { useMutation, gql } from '@apollo/client';
+import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const REGISTER_USER = gql`
   mutation RegisterUser($email: String!, $password: String!, $passwordConfirmation: String!) {
@@ -16,22 +16,22 @@ const REGISTER_USER = gql`
 `;
 
 const Registration = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [registerUser, { data, error }] = useMutation(REGISTER_USER);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await registerUser({ variables: { email, password, passwordConfirmation } });
     if (response.data.registerUser.user) {
-      setSuccessMessage("Registration successful! You can now log in.");
-      setErrorMessage(""); // Clear any previous error message
+      setSuccessMessage('Registration successful! You can now log in.');
+      setErrorMessage('');
     } else if (response.data.registerUser.errors.length > 0) {
-      setErrorMessage(response.data.registerUser.errors.join(", "));
-      setSuccessMessage(""); // Clear any previous success message
+      setErrorMessage(response.data.registerUser.errors.join(', '));
+      setSuccessMessage('');
     }
   };
 

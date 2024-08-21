@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import client from './apolloClient';
+import Navbar from '../components/Navbar';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
 import UserLanding from '../components/UserLanding';
@@ -17,10 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <ApolloProvider client={client}>
         <Router>
           <AuthProvider>
+            <Navbar />
             <Routes>
-              <Route path='/' element={<Login />} />
-              <Route path='/register' element={<Registration />} />
-              <Route path='/user-landing' element={<UserLanding />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Registration />} />
+              <Route path="/user-landing" element={<UserLanding />} />
             </Routes>
           </AuthProvider>
         </Router>
