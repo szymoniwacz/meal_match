@@ -11,6 +11,7 @@ const LOGIN_USER = gql`
         id
         email
       }
+      token
       errors
     }
   }
@@ -28,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     const response = await loginUser({ variables: { email, password } });
     if (response.data.loginUser.user) {
-      login();
+      login(response.data.loginUser.user.email, response.data.loginUser.token);
       navigate('/user-landing', { state: { message: 'Welcome back!' } });
     } else if (response.data.loginUser.errors.length > 0) {
       setErrorMessage(response.data.loginUser.errors.join(', '));
