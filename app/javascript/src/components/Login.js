@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from './authContext';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const LOGIN_USER = gql`
@@ -24,6 +24,16 @@ const Login = () => {
   const [loginUser, { data, error }] = useMutation(LOGIN_USER);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const successMessage = new URLSearchParams(location.search).get('notice');
+
+  useEffect(() => {
+    if (successMessage) {
+      setTimeout(() => {
+        navigate(location.pathname, { replace: true });
+      }, 3000); // Clear the success message after 3 seconds
+    }
+  }, [successMessage, navigate, location.pathname]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +50,11 @@ const Login = () => {
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
         <h2>Login</h2>
+        {successMessage && (
+          <div className="alert alert-success" role="alert">
+            {successMessage}
+          </div>
+        )}
         {errorMessage && (
           <div className="alert alert-danger" role="alert">
             {errorMessage}

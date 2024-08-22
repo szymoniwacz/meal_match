@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const REGISTER_USER = gql`
@@ -21,7 +20,7 @@ const Registration = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [registerUser, { data, error }] = useMutation(REGISTER_USER);
+  const [registerUser] = useMutation(REGISTER_USER);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,9 +80,6 @@ const Registration = () => {
             Register
           </button>
         </form>
-        <div className="mt-3">
-          <Link to="/">Go to Login</Link>
-        </div>
       </div>
     </div>
   );
