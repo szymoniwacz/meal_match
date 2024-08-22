@@ -13,7 +13,7 @@ module Mutations
       return { user: nil, token: nil, errors: ['Invalid email or password'] } unless user
 
       if user.valid_password?(password)
-        token = JWT.encode({ user_id: user.id }, Rails.application.secrets.secret_key_base)
+        token = JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base)
         if remember_me
           user.remember_me!
           context[:cookies].permanent.signed[:remember_user_token] = {
