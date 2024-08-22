@@ -5,8 +5,8 @@ import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!) {
-    loginUser(input: { email: $email, password: $password }) {
+  mutation LoginUser($email: String!, $password: String!, $rememberMe: Boolean) {
+    loginUser(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
       user {
         id
         email
@@ -20,6 +20,7 @@ const LOGIN_USER = gql`
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [loginUser, { data, error }] = useMutation(LOGIN_USER);
   const { login } = useContext(AuthContext);
@@ -37,7 +38,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await loginUser({ variables: { email, password } });
+    const response = await loginUser({ variables: { email, password, rememberMe } });
     if (response.data.loginUser.user) {
       login(response.data.loginUser.user.email, response.data.loginUser.token);
       navigate('/user-landing', { state: { message: 'Welcome back!' } });
@@ -78,6 +79,16 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+          </div>
+          <div className="form-group form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
           </div>
           <button type="submit" className="btn btn-primary mt-3">
             Login
