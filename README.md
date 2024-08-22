@@ -27,7 +27,7 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 
    ```sh
    git clone https://github.com/szymoniwacz/meal_match.git
-   cd base
+   cd meal_match
    ```
 
 2. **Install dependencies:**
@@ -125,8 +125,13 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 2. **Clone your fork:**
 
    ```sh
+   <<<<<<< HEAD
    git clone https://github.com/yourusername/base.git
    cd base
+   =======
+   git clone https://github.com/yourusername/meal_match.git
+   cd meal_match
+   >>>>>>> f3d24ca (Update README.md)
    ```
 
 3. **Create a new branch:**
