@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mutations
   class LoginUser < BaseMutation
     argument :email, String, required: true
@@ -9,7 +11,7 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(email:, password:, remember_me: false)
-      user = User.find_for_authentication(email: email)
+      user = User.find_for_authentication(email:)
       return { user: nil, token: nil, errors: ['Invalid email or password'] } unless user
 
       if user.valid_password?(password)
@@ -17,12 +19,12 @@ module Mutations
         if remember_me
           user.remember_me!
           context[:cookies].permanent.signed[:remember_user_token] = {
-            value: user.signed_id(purpose: "remember_me", expires_in: 2.weeks),
+            value: user.signed_id(purpose: 'remember_me', expires_in: 2.weeks),
             httponly: true,
-            secure: Rails.env.production?
+            secure: Rails.env.production?,
           }
         end
-        { user: user, token: token, errors: [] }
+        { user:, token:, errors: [] }
       else
         { user: nil, token: nil, errors: ['Invalid email or password'] }
       end
