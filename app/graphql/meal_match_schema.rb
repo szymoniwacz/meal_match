@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BaseSchema < GraphQL::Schema
+class MealMatchSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 

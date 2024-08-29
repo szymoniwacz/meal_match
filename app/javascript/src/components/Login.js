@@ -3,6 +3,7 @@ import { useMutation, gql } from '@apollo/client';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from 'react-i18next';
 
 const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!, $rememberMe: Boolean) {
@@ -27,6 +28,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const successMessage = new URLSearchParams(location.search).get('notice');
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (successMessage) {
@@ -41,7 +43,7 @@ const Login = () => {
     const response = await loginUser({ variables: { email, password, rememberMe } });
     if (response.data.loginUser.user) {
       login(response.data.loginUser.user.email, response.data.loginUser.token);
-      navigate('/user-landing', { state: { message: 'Welcome back!' } });
+      navigate('/user-landing', { state: { message: t('Welcome!') } });
     } else if (response.data.loginUser.errors.length > 0) {
       setErrorMessage(response.data.loginUser.errors.join(', '));
     }
@@ -50,7 +52,7 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
-        <h2>Login</h2>
+        <h2>{t('Login')}</h2>
         {successMessage && (
           <div className="alert alert-success" role="alert">
             {successMessage}
@@ -63,7 +65,7 @@ const Login = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email:</label>
+            <label>{t('Email')}:</label>
             <input
               type="email"
               className="form-control"
@@ -72,7 +74,7 @@ const Login = () => {
             />
           </div>
           <div className="form-group">
-            <label>Password:</label>
+            <label>{t('Password')}:</label>
             <input
               type="password"
               className="form-control"
@@ -88,10 +90,10 @@ const Login = () => {
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
-            <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
+            <label className="form-check-label" htmlFor="rememberMe">{t('Remember me')}</label>
           </div>
           <button type="submit" className="btn btn-primary mt-3">
-            Login
+            {t('Login')}
           </button>
         </form>
       </div>
