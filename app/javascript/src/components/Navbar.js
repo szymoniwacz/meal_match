@@ -34,7 +34,6 @@ const Navbar = () => {
           <div className="ms-auto d-flex">
             {isAuthenticated && (
               <>
-                <Link className="btn btn-secondary me-2" to="/recipes-finder">Recipes Finder</Link>
                 <button className="btn btn-danger" onClick={logout}>{t('Logout')}</button>
               </>
             )}

@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Registration from './components/Registration';
-import UserLanding from './components/UserLanding';
 import RecipesFinder from './components/RecipesFinder';
 import { AuthContext } from './context/authContext';
 
@@ -18,9 +17,8 @@ const App = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Navigate to="/user-landing" /> : <Login />} />
-        <Route path="/register" element={isAuthenticated ? <Navigate to="/user-landing" /> : <Registration />} />
-        <Route path="/user-landing" element={<ProtectedRoute element={UserLanding} />} />
+        <Route path="/" element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Login />} />
+        <Route path="/register" element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Registration />} />
         <Route path="/recipes-finder" element={<ProtectedRoute element={RecipesFinder} />} />
       </Routes>
     </>

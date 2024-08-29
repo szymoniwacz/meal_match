@@ -43,7 +43,7 @@ const Login = () => {
     const response = await loginUser({ variables: { email, password, rememberMe } });
     if (response.data.loginUser.user) {
       login(response.data.loginUser.user.email, response.data.loginUser.token);
-      navigate('/user-landing', { state: { message: t('Welcome!') } });
+      navigate('/recipes-finder');
     } else if (response.data.loginUser.errors.length > 0) {
       setErrorMessage(response.data.loginUser.errors.join(', '));
     }
