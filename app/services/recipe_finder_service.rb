@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class RecipeFinderService
-  def initialize(ingredient_ids, language)
+  def initialize(ingredient_ids)
     @ingredient_ids = ingredient_ids
-    @language = language
   end
 
   def find_matching_recipes
     recipes = Recipe.where(language: @language).map do |recipe|
-      matching_ingredients_count = recipe.ingredients.where(id: @ingredient_ids, language: @language).count
+      matching_ingredients_count = recipe.ingredients.where(id: @ingredient_ids).count
       { recipe:, matching_ingredients_count: }
     end
 
