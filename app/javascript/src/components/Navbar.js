@@ -1,8 +1,6 @@
-// app/javascript/src/components/Navbar.js
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
-import LanguageSwitcher from './LanguageSwitcher';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 
@@ -35,7 +33,10 @@ const Navbar = () => {
           </ul>
           <div className="ms-auto d-flex">
             {isAuthenticated && (
-              <button className="btn btn-danger ms-2" onClick={logout}>{t('Logout')}</button>
+              <>
+                <Link className="btn btn-secondary me-2" to="/recipes-finder">Recipes Finder</Link>
+                <button className="btn btn-danger" onClick={logout}>{t('Logout')}</button>
+              </>
             )}
           </div>
         </div>
