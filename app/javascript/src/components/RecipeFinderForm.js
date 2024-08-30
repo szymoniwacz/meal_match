@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import IngredientInput from './IngredientInput';
+import SelectedIngredients from './SelectedIngredients';
+import RecipeTable from './RecipeTable';
 import { GET_INGREDIENTS } from '../graphql/queries/getIngredients';
 import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RecipeFinderForm = () => {
   const { data, loading, error } = useQuery(GET_INGREDIENTS);
@@ -30,7 +33,10 @@ const RecipeFinderForm = () => {
 
   const handleSuggestionClick = (ingredientId) => {
     if (!selectedIngredients.includes(ingredientId)) {
-      setSelectedIngredients([...selectedIngredients, ingredientId]);
+      setSelectedIngredients((prevSelected) => {
+        const updatedSelection = [...prevSelected, ingredientId];
+        return updatedSelection;
+      });
       setInputValue('');
       setSuggestions([]);
     }
@@ -88,102 +94,29 @@ const RecipeFinderForm = () => {
     <div className="container mt-5">
       <h2 className="mb-4">Find Recipes</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Start typing an ingredient:</label>
-          <input
-            type="text"
-            className="form-control"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="Type at least 3 letters..."
-          />
-          {suggestions.length > 0 && (
-            <ul className="list-group mt-2">
-              {suggestions.map((ingredient) => (
-                <li
-                  key={ingredient.id}
-                  className={`list-group-item ${selectedIngredients.includes(ingredient.id) ? 'text-muted' : ''}`}
-                  onClick={() => !selectedIngredients.includes(ingredient.id) && handleSuggestionClick(ingredient.id)}
-                  style={{
-                    cursor: selectedIngredients.includes(ingredient.id) ? 'not-allowed' : 'pointer',
-                    backgroundColor: selectedIngredients.includes(ingredient.id) ? '#f8f9fa' : '',
-                    border: '1px solid #dee2e6',
-                  }}
-                  onMouseOver={(e) => !selectedIngredients.includes(ingredient.id) && (e.currentTarget.style.backgroundColor = '#e9ecef')}
-                  onMouseOut={(e) => !selectedIngredients.includes(ingredient.id) && (e.currentTarget.style.backgroundColor = '')}
-                >
-                  {ingredient.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="mb-3">
-          <h5>Selected Ingredients:</h5>
-          <ul className="list-group">
-            {selectedIngredients.map((ingredientId) => {
-              const ingredient = data.ingredients.find(ing => ing.id === ingredientId);
-              return (
-                <li key={ingredientId} className="list-group-item d-flex justify-content-between align-items-center">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked
-                      onChange={() => handleUnselectIngredient(ingredientId)}
-                    />
-                    <label className="form-check-label ms-2">
-                      {ingredient.name}
-                    </label>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <IngredientInput
+          inputValue={inputValue}
+          handleInputChange={handleInputChange}
+          suggestions={suggestions}
+          handleSuggestionClick={handleSuggestionClick}
+        />
+        <SelectedIngredients
+          selectedIngredients={selectedIngredients}
+          data={data}
+          handleUnselectIngredient={handleUnselectIngredient}
+        />
         <button type="submit" className="btn btn-primary">
           Find Recipes
         </button>
       </form>
 
       {recipes.length > 0 && (
-        <div className="mt-5">
-          <h3>Found Recipes</h3>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th onClick={() => requestSort('title')}>
-                  Title {getSortDirectionIcon('title')}
-                </th>
-                <th onClick={() => requestSort('cookTime')}>
-                  Cook Time {getSortDirectionIcon('cookTime')}
-                </th>
-                <th onClick={() => requestSort('prepTime')}>
-                  Prep Time {getSortDirectionIcon('prepTime')}
-                </th>
-                <th onClick={() => requestSort('ratings')}>
-                  Ratings {getSortDirectionIcon('ratings')}
-                </th>
-                <th onClick={() => requestSort('matchingIngredientsCount')}>
-                  Matching Ingredients Count {getSortDirectionIcon('matchingIngredientsCount')}
-                </th>
-                <th>Ingredient IDs</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedRecipes().map((recipe) => (
-                <tr key={recipe.id}>
-                  <td>{recipe.title}</td>
-                  <td>{recipe.cookTime}</td>
-                  <td>{recipe.prepTime}</td>
-                  <td>{recipe.ratings}</td>
-                  <td>{recipe.matchingIngredientsCount}</td>
-                  <td>{recipe.ingredientIds.join(', ')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <RecipeTable
+          recipes={recipes}
+          sortedRecipes={sortedRecipes}
+          requestSort={requestSort}
+          getSortDirectionIcon={getSortDirectionIcon}
+        />
       )}
     </div>
   );
