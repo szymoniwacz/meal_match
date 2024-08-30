@@ -13,6 +13,7 @@ gem 'pg', '~> 1.1'
 gem 'rack-cors', '2.0.2'
 gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 gem 'redis', '>= 4.0.1'
+gem 'ruby-progressbar'
 gem 'sprockets-rails', '3.5.1'
 gem 'tzinfo-data', platforms: %i[ windows jruby ]
 gem 'webpacker', '~> 5.4'

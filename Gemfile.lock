@@ -367,6 +367,7 @@ DEPENDENCIES
   rubocop-performance (= 1.21.1)
   rubocop-rails (~> 2.25)
   rubocop-rspec (~> 3.0)
+  ruby-progressbar
   selenium-webdriver
   shoulda-matchers
   sprockets-rails (= 3.5.1)
