@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { gql } from '@apollo/client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const GET_INGREDIENTS = gql`
   query GetIngredients {
@@ -37,6 +38,8 @@ const RecipeFinderForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: 'title', direction: 'ascending' });
 
   useEffect(() => {
     if (inputValue.length >= 3) {
@@ -71,10 +74,39 @@ const RecipeFinderForm = () => {
       const { data } = await findRecipes({
         variables: { input: { ingredientIds: selectedIngredients } },
       });
-      console.log('Found recipes:', data.findRecipes);
+      setRecipes(data.findRecipes.recipes);
     } catch (error) {
       console.error('Error finding recipes:', error);
     }
+  };
+
+  const sortedRecipes = () => {
+    const sortableItems = [...recipes];
+    sortableItems.sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+    return sortableItems;
+  };
+
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortDirectionIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === 'ascending' ? '↑' : '↓';
+    }
+    return '↕';
   };
 
   if (loading) return <p>Loading ingredients...</p>;
@@ -141,6 +173,46 @@ const RecipeFinderForm = () => {
           Find Recipes
         </button>
       </form>
+
+      {recipes.length > 0 && (
+        <div className="mt-5">
+          <h3>Found Recipes</h3>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th onClick={() => requestSort('title')}>
+                  Title {getSortDirectionIcon('title')}
+                </th>
+                <th onClick={() => requestSort('cookTime')}>
+                  Cook Time {getSortDirectionIcon('cookTime')}
+                </th>
+                <th onClick={() => requestSort('prepTime')}>
+                  Prep Time {getSortDirectionIcon('prepTime')}
+                </th>
+                <th onClick={() => requestSort('ratings')}>
+                  Ratings {getSortDirectionIcon('ratings')}
+                </th>
+                <th onClick={() => requestSort('matchingIngredientsCount')}>
+                  Matching Ingredients Count {getSortDirectionIcon('matchingIngredientsCount')}
+                </th>
+                <th>Ingredient IDs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedRecipes().map((recipe) => (
+                <tr key={recipe.id}>
+                  <td>{recipe.title}</td>
+                  <td>{recipe.cookTime}</td>
+                  <td>{recipe.prepTime}</td>
+                  <td>{recipe.ratings}</td>
+                  <td>{recipe.matchingIngredientsCount}</td>
+                  <td>{recipe.ingredientIds.join(', ')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
