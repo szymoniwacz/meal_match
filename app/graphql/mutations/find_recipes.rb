@@ -7,8 +7,8 @@ module Mutations
     field :recipes, [Types::RecipeType], null: false
 
     def resolve(input:)
-      ingredient_ids = input[:ingredient_ids]
-      recipes = RecipeFinderService.new(ingredient_ids).find_matching_recipes
+      ingredient_ids = input[:ingredientIds]
+      recipes = RecipeFinderService.new(ingredient_ids).call
       { recipes: }
     end
   end

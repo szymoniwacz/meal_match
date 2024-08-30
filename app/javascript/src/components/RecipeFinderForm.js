@@ -16,8 +16,16 @@ const FIND_RECIPES = gql`
     findRecipes(input: $input) {
       recipes {
         id
-        name
-        instructions
+        title
+        ingredientIds
+        cookTime
+        prepTime
+        ratings
+        cuisine
+        category
+        author
+        image
+        matchingIngredientsCount
       }
     }
   }

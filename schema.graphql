@@ -45,10 +45,17 @@ type Query {
 }
 
 type Recipe {
+  author: String
+  category: String
+  cookTime: Int
+  cuisine: String
   id: ID!
+  image: String
   ingredients: [String!]!
-  instructions: String!
-  name: String!
+  matchingIngredientsCount: Int!
+  prepTime: Int
+  ratings: Float
+  title: String!
 }
 
 """

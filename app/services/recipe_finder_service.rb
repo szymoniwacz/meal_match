@@ -1,16 +1,27 @@
 # frozen_string_literal: true
 
 class RecipeFinderService
+  attr_reader :ingredient_ids
+
   def initialize(ingredient_ids)
     @ingredient_ids = ingredient_ids
   end
 
-  def find_matching_recipes
-    recipes = Recipe.where(language: @language).map do |recipe|
-      matching_ingredients_count = recipe.ingredients.where(id: @ingredient_ids).count
-      { recipe:, matching_ingredients_count: }
-    end
+  def call
+    Recipe.joins(:ingredients)
+      .where(ingredients: { id: ingredient_ids })
+      .group('recipes.id')
+      .select(select_columns)
+      .order('matching_ingredients_count DESC')
+  end
 
-    recipes.sort_by { |result| -result[:matching_ingredients_count] }
+  private
+
+  def select_columns
+    <<-SQL.squish
+      recipes.*,
+      COUNT(ingredients.id) AS matching_ingredients_count,
+      ARRAY_AGG(ingredients.id) AS ingredient_ids
+    SQL
   end
 end
