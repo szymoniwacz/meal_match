@@ -1,36 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { gql } from '@apollo/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const GET_INGREDIENTS = gql`
-  query GetIngredients {
-    ingredients {
-      id
-      name
-    }
-  }
-`;
-
-const FIND_RECIPES = gql`
-  mutation FindRecipes($input: FindRecipesInput!) {
-    findRecipes(input: $input) {
-      recipes {
-        id
-        title
-        ingredientIds
-        cookTime
-        prepTime
-        ratings
-        cuisine
-        category
-        author
-        image
-        matchingIngredientsCount
-      }
-    }
-  }
-`;
+import { GET_INGREDIENTS } from '../graphql/queries/getIngredients';
+import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
 
 const RecipeFinderForm = () => {
   const { data, loading, error } = useQuery(GET_INGREDIENTS);

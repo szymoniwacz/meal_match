@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const REGISTER_USER = gql`
-  mutation RegisterUser($email: String!, $password: String!, $passwordConfirmation: String!) {
-    registerUser(input: { email: $email, password: $password, passwordConfirmation: $passwordConfirmation }) {
-      user {
-        id
-        email
-      }
-      errors
-    }
-  }
-`;
+import { REGISTER_USER } from '../graphql/mutations/registerUser';
 
 const Registration = () => {
   const [email, setEmail] = useState('');

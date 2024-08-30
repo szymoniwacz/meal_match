@@ -1,29 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
-
-const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!, $rememberMe: Boolean) {
-    loginUser(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
-      user {
-        id
-        email
-      }
-      token
-      errors
-    }
-  }
-`;
+import { LOGIN_USER } from '../graphql/mutations/loginUser';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loginUser, { data, error }] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +22,7 @@ const Login = () => {
     if (successMessage) {
       setTimeout(() => {
         navigate(location.pathname, { replace: true });
-      }, 3000); // Clear the success message after 3 seconds
+      }, 3000);
     }
   }, [successMessage, navigate, location.pathname]);
 
@@ -70,6 +58,7 @@ const Login = () => {
               type="email"
               className="form-control"
               value={email}
+              placeholder="Type your email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -79,6 +68,7 @@ const Login = () => {
               type="password"
               className="form-control"
               value={password}
+              placeholder="Type your password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
