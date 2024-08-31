@@ -28,11 +28,11 @@ const RecipeTable = ({ recipes, sortedRecipes, requestSort, getSortDirectionIcon
         {sortedRecipes().map((recipe) => (
           <tr key={recipe.id}>
             <td>{recipe.title}</td>
-            <td>{recipe.cookTime}</td>
-            <td>{recipe.prepTime}</td>
-            <td>{recipe.ratings}</td>
-            <td>{recipe.matchingIngredientsCount}</td>
-            <td>{recipe.ingredientIds.join(', ')}</td>
+            <td>{recipe.cookTime !== undefined ? recipe.cookTime : 'N/A'}</td>
+            <td>{recipe.prepTime !== undefined ? recipe.prepTime : 'N/A'}</td>
+            <td>{recipe.ratings !== undefined ? recipe.ratings : 'N/A'}</td>
+            <td>{recipe.matchingIngredientsCount !== undefined ? recipe.matchingIngredientsCount : 'N/A'}</td>
+            <td>{recipe.ingredientIds ? recipe.ingredientIds.join(', ') : 'N/A'}</td>
           </tr>
         ))}
       </tbody>

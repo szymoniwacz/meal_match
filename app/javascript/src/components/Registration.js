@@ -43,6 +43,7 @@ const Registration = () => {
             <input
               type="email"
               className="form-control"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -52,6 +53,7 @@ const Registration = () => {
             <input
               type="password"
               className="form-control"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -61,6 +63,7 @@ const Registration = () => {
             <input
               type="password"
               className="form-control"
+              placeholder="Confirm Password"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
             />

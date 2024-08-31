@@ -62,7 +62,8 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/vendor/",
-      "/config/webpack/"
+      "/config/webpack/",
+      "app/javascript/src/components/__tests__/mocks.js"
     ]
   }
 }

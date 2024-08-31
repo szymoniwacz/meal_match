@@ -99,7 +99,7 @@ const RecipeFinderForm = () => {
           handleInputChange={handleInputChange}
           suggestions={suggestions}
           handleSuggestionClick={handleSuggestionClick}
-          selectedIngredients={selectedIngredients} // Pass selectedIngredients down
+          selectedIngredients={selectedIngredients}
         />
         <SelectedIngredients
           selectedIngredients={selectedIngredients}
@@ -107,7 +107,7 @@ const RecipeFinderForm = () => {
           handleUnselectIngredient={handleUnselectIngredient}
         />
         <button type="submit" className="btn btn-primary">
-          Find Recipes
+          Search
         </button>
       </form>
 
