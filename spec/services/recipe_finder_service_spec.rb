@@ -9,7 +9,7 @@ RSpec.describe RecipeFinderService, type: :service do
     let(:ingredient_ids) { [1, 2, 3] }
 
     it 'assigns the ingredient_ids to an instance variable' do
-      expect(service.ingredient_ids).to eq(ingredient_ids)
+      expect(service.instance_variable_get(:@ingredient_ids)).to eq(ingredient_ids)
     end
   end
 
