@@ -1,6 +1,6 @@
 import React from 'react';
 
-const IngredientInput = ({ inputValue, handleInputChange, suggestions, handleSuggestionClick }) => (
+const IngredientInput = ({ inputValue, handleInputChange, suggestions, handleSuggestionClick, selectedIngredients }) => (
   <div className="mb-3">
     <label className="form-label">Start typing an ingredient:</label>
     <input
@@ -12,19 +12,24 @@ const IngredientInput = ({ inputValue, handleInputChange, suggestions, handleSug
     />
     {suggestions.length > 0 && (
       <ul className="list-group mt-2">
-        {suggestions.map((ingredient) => (
-          <li
-            key={ingredient.id}
-            className={`list-group-item`}
-            onClick={() => handleSuggestionClick(ingredient.id)}
-            style={{
-              cursor: 'pointer',
-              border: '1px solid #dee2e6',
-            }}
-          >
-            {ingredient.name}
-          </li>
-        ))}
+        {suggestions.map((ingredient) => {
+          const isSelected = selectedIngredients.includes(ingredient.id);
+          return (
+            <li
+              key={ingredient.id}
+              className={`list-group-item ${isSelected ? 'disabled' : ''}`}
+              onClick={() => !isSelected && handleSuggestionClick(ingredient.id)}
+              style={{
+                cursor: isSelected ? 'not-allowed' : 'pointer',
+                color: isSelected ? '#6c757d' : 'inherit',
+                backgroundColor: isSelected ? '#e9ecef' : 'inherit',
+                border: '1px solid #dee2e6',
+              }}
+            >
+              {ingredient.name}
+            </li>
+          );
+        })}
       </ul>
     )}
   </div>

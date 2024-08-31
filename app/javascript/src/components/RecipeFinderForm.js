@@ -99,6 +99,7 @@ const RecipeFinderForm = () => {
           handleInputChange={handleInputChange}
           suggestions={suggestions}
           handleSuggestionClick={handleSuggestionClick}
+          selectedIngredients={selectedIngredients} // Pass selectedIngredients down
         />
         <SelectedIngredients
           selectedIngredients={selectedIngredients}
