@@ -18,13 +18,18 @@ gem 'tzinfo-data', platforms: %i[ windows jruby ]
 gem 'webpacker', '~> 5.4'
 
 group :development, :test do
+  gem 'database_cleaner-active_record'
   gem 'debug', platforms: %i[ mri windows ]
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'graphiql-rails', '1.10.0'
   gem 'letter_opener', '1.10.0'
+  gem 'rspec-rails'
   gem 'rubocop', '~> 1.64', require: false
   gem 'rubocop-performance', '1.21.1', require: false
   gem 'rubocop-rails', '~> 2.25', require: false
   gem 'rubocop-rspec', '~> 3.0', require: false
+  gem 'shoulda-matchers'
 end
 
 group :development do
