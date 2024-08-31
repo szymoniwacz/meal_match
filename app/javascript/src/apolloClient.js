@@ -1,23 +1,10 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-
-const httpLink = createHttpLink({
-  uri: '/graphql',
-});
-
-const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      'X-CSRF-Token': csrfToken,
-    },
-  };
-});
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  uri: process.env.REACT_APP_GRAPHQL_URI,
+  headers: {
+    authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
   cache: new InMemoryCache(),
 });
 
