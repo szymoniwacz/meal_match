@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const SelectedIngredients = ({ selectedIngredients, data, handleUnselectIngredient }) => (
@@ -25,5 +26,18 @@ const SelectedIngredients = ({ selectedIngredients, data, handleUnselectIngredie
     </ul>
   </div>
 );
+
+SelectedIngredients.propTypes = {
+  selectedIngredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+  data: PropTypes.shape({
+    ingredients: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
+  handleUnselectIngredient: PropTypes.func.isRequired,
+};
 
 export default SelectedIngredients;

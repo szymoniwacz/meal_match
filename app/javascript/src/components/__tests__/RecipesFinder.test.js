@@ -1,9 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RecipesFinder from '../RecipesFinder';
-import RecipeFinderForm from '../RecipeFinderForm';
 
-jest.mock('../RecipeFinderForm', () => () => <div>Mocked RecipeFinderForm</div>);
+jest.mock('../RecipeFinderForm', () => {
+  const MockRecipeFinderForm = () => <div>Mocked RecipeFinderForm</div>;
+  MockRecipeFinderForm.displayName = 'MockRecipeFinderForm';
+  return MockRecipeFinderForm;
+});
 
 describe('RecipesFinder Component', () => {
   test('renders the Recipes Finder heading', () => {

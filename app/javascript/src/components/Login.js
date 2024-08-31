@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';

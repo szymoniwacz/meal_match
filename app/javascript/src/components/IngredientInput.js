@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const IngredientInput = ({ inputValue, handleInputChange, suggestions, handleSuggestionClick, selectedIngredients }) => (
@@ -34,5 +35,18 @@ const IngredientInput = ({ inputValue, handleInputChange, suggestions, handleSug
     )}
   </div>
 );
+
+IngredientInput.propTypes = {
+  inputValue: PropTypes.string.isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+  suggestions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  handleSuggestionClick: PropTypes.func.isRequired,
+  selectedIngredients: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+};
 
 export default IngredientInput;

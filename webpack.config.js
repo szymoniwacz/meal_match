@@ -1,5 +1,4 @@
 const path = require('path');
-const { environment } = require('@rails/webpacker');
 const webpack = require('webpack');
 
 module.exports = {

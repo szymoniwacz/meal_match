@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';  // Import PropTypes
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
@@ -9,6 +10,10 @@ import { AuthContext } from './context/authContext';
 const ProtectedRoute = ({ element: Element }) => {
   const { isAuthenticated } = useContext(AuthContext);
   return isAuthenticated ? <Element /> : <Navigate to="/" />;
+};
+
+ProtectedRoute.propTypes = {
+  element: PropTypes.elementType.isRequired,
 };
 
 const App = () => {

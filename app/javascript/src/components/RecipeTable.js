@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
-const RecipeTable = ({ recipes, sortedRecipes, requestSort, getSortDirectionIcon }) => (
+const RecipeTable = ({ sortedRecipes, requestSort, getSortDirectionIcon }) => (
   <div className="mt-5">
     <h3>Found Recipes</h3>
     <table className="table table-hover">
@@ -39,5 +40,24 @@ const RecipeTable = ({ recipes, sortedRecipes, requestSort, getSortDirectionIcon
     </table>
   </div>
 );
+
+RecipeTable.propTypes = {
+  sortedRecipes: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        cookTime: PropTypes.number,
+        prepTime: PropTypes.number,
+        ratings: PropTypes.number,
+        matchingIngredientsCount: PropTypes.number,
+        ingredientIds: PropTypes.arrayOf(PropTypes.string),
+      })
+    ),
+    PropTypes.func,
+  ]).isRequired,
+  requestSort: PropTypes.func.isRequired,
+  getSortDirectionIcon: PropTypes.func.isRequired,
+};
 
 export default RecipeTable;
