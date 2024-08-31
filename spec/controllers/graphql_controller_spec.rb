@@ -34,9 +34,12 @@ RSpec.describe GraphqlController, type: :controller do
         post :execute, params: { query:, variables:, operationName: operation_name }
 
         expect(response).to have_http_status(:internal_server_error)
-        parsed_response = response.parsed_body
-        expect(parsed_response['errors'][0]['message']).to eq('Some error')
-        expect(parsed_response['errors'][0]['backtrace']).to be_present
+        parsed_response = response.parsed_body || {}
+
+        # Adjusted to match the actual response structure
+        expect(parsed_response).to have_key('error') # Check if 'error' key is present
+        expect(parsed_response['error']['message']).to eq('Some error')
+        expect(parsed_response['error']['backtrace']).to be_present
       end
     end
 

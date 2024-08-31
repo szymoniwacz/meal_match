@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
+  # If accessing from outside this domain, nullify the session
+  # This allows for outside API access while preventing CSRF attacks
+  protect_from_forgery with: :null_session
+
   def execute
-    variables = ensure_hash(params[:variables])
+    variables = params[:variables] || {}
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      current_user: current_user,
+      current_user:,
+      cookies:,
     }
-    result = MealMatchSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = MealMatchSchema.execute(query, variables:, context:, operation_name:)
     render json: result
   rescue StandardError => e
     raise e unless Rails.env.development?
@@ -18,27 +23,9 @@ class GraphqlController < ApplicationController
 
   private
 
-  def current_user
-    @current_user ||= User.find_by(token: request.headers['Authorization'])
-  end
-
-  def ensure_hash(ambiguous_param)
-    case ambiguous_param
-    when String
-      ambiguous_param.present? ? JSON.parse(ambiguous_param) : {}
-    when Hash, ActionController::Parameters
-      ambiguous_param
-    when nil
-      {}
-    else
-      raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
-    end
-  end
-
   def handle_error_in_development(e)
     logger.error e.message
     logger.error e.backtrace.join("\n")
-
-    render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
+    render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: :internal_server_error
   end
 end
