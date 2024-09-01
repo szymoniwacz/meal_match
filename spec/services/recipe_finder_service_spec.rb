@@ -83,7 +83,11 @@ RSpec.describe RecipeFinderService, type: :service do
         result = service.call
         recipe1_result = result.detect { |r| r.id == recipes[0].id }
 
-        expect(recipe1_result.attributes.keys).to include('matching_ingredients_count', 'ingredient_ids')
+        expect(recipe1_result.attributes.keys).to include(
+          'matching_ingredients_count',
+          'ingredient_names',
+          'ingredient_ids',
+        )
       end
 
       it 'matches correct ingredient_ids for recipe1' do
@@ -104,7 +108,11 @@ RSpec.describe RecipeFinderService, type: :service do
         result = service.call
         recipe2_result = result.detect { |r| r.id == recipes[1].id }
 
-        expect(recipe2_result.attributes.keys).to include('matching_ingredients_count', 'ingredient_ids')
+        expect(recipe2_result.attributes.keys).to include(
+          'matching_ingredients_count',
+          'ingredient_names',
+          'ingredient_ids',
+        )
       end
 
       it 'matches correct ingredient_ids for recipe2' do

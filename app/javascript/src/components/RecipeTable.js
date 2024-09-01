@@ -26,7 +26,7 @@ const RecipeTable = ({ sortedRecipes, requestSort, getSortDirectionIcon }) => {
             <th onClick={() => requestSort('matchingIngredientsCount')}>
               {t('recipeTable.matchingIngredientsCount')} {getSortDirectionIcon('matchingIngredientsCount')}
             </th>
-            <th>{t('recipeTable.ingredientIds')}</th>
+            <th>{t('recipeTable.ingredients')}</th>
           </tr>
         </thead>
         <tbody>
@@ -49,7 +49,9 @@ const RecipeTable = ({ sortedRecipes, requestSort, getSortDirectionIcon }) => {
                   ? recipe.matchingIngredientsCount
                   : t('recipeTable.notAvailable')}
               </td>
-              <td>{recipe.ingredientIds ? recipe.ingredientIds.join(', ') : t('recipeTable.notAvailable')}</td>
+              <td>
+                {recipe.ingredientNames ? recipe.ingredientNames.join(', ') : t('recipeTable.notAvailable')}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -68,7 +70,7 @@ RecipeTable.propTypes = {
         prepTime: PropTypes.number,
         ratings: PropTypes.number,
         matchingIngredientsCount: PropTypes.number,
-        ingredientIds: PropTypes.arrayOf(PropTypes.string),
+        ingredientNames: PropTypes.arrayOf(PropTypes.string), // Updated to reflect ingredient names
       })
     ),
     PropTypes.func,

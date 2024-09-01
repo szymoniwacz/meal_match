@@ -5,6 +5,7 @@ module Types
     field :id, ID, null: false
     field :title, String, null: false
     field :ingredient_ids, [ID], null: false
+    field :ingredient_names, [String], null: false
     field :cook_time, Integer, null: true
     field :prep_time, Integer, null: true
     field :ratings, Float, null: true
