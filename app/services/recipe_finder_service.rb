@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class RecipeFinderService
-  def initialize(ingredient_ids)
+  def initialize(ingredient_ids, language: 'en')
     @ingredient_ids = ingredient_ids
+    @language = language
   end
 
   def call
@@ -15,11 +16,12 @@ class RecipeFinderService
 
   private
 
-  attr_reader :ingredient_ids
+  attr_reader :ingredient_ids, :language
 
   def query_string
     {
       ingredients: { id: ingredient_ids },
+      language: language
     }
   end
 

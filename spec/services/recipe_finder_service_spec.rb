@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe RecipeFinderService, type: :service do
   describe '#initialize' do
-    subject(:service) { described_class.new(ingredient_ids) }
+    subject(:service) { described_class.new(ingredient_ids:) }
 
     let(:ingredient_ids) { [1, 2, 3] }
 
@@ -14,7 +14,7 @@ RSpec.describe RecipeFinderService, type: :service do
   end
 
   describe '#call' do
-    subject(:service) { described_class.new(ingredient_ids) }
+    subject(:service) { described_class.new(ingredient_ids:) }
 
     let(:ingredients) { create_list(:ingredient, 5) }
     let(:ingredient_ids) { ingredients[0..2].map(&:id) }
@@ -40,7 +40,7 @@ RSpec.describe RecipeFinderService, type: :service do
 
     it 'returns an empty result when no recipes match the ingredients' do
       no_match_ingredient_ids = [ingredients[4].id]
-      service_with_no_match = described_class.new(no_match_ingredient_ids)
+      service_with_no_match = described_class.new(ingredient_ids: no_match_ingredient_ids)
 
       result = service_with_no_match.call
       expect(result).to be_empty
@@ -48,7 +48,7 @@ RSpec.describe RecipeFinderService, type: :service do
 
     it 'handles cases where some ingredients do not match any recipe' do
       partial_match_ingredient_ids = [ingredients[0].id, ingredients[4].id]
-      service_with_partial_match = described_class.new(partial_match_ingredient_ids)
+      service_with_partial_match = described_class.new(ingredient_ids: partial_match_ingredient_ids)
 
       result = service_with_partial_match.call
       expect(result).to contain_exactly(recipes[0], recipes[1])
@@ -56,7 +56,7 @@ RSpec.describe RecipeFinderService, type: :service do
 
     it 'handles an empty ingredient_ids array' do
       empty_ingredient_ids = []
-      service_with_empty_ids = described_class.new(empty_ingredient_ids)
+      service_with_empty_ids = described_class.new(ingredient_ids: empty_ingredient_ids)
 
       result = service_with_empty_ids.call
       expect(result).to be_empty
@@ -64,7 +64,7 @@ RSpec.describe RecipeFinderService, type: :service do
 
     it 'returns recipes even if ingredient_ids contains duplicates' do
       duplicate_ingredient_ids = [ingredients[0].id, ingredients[0].id, ingredients[1].id]
-      service_with_duplicates = described_class.new(duplicate_ingredient_ids)
+      service_with_duplicates = described_class.new(ingredient_ids: duplicate_ingredient_ids)
 
       result = service_with_duplicates.call
       expect(result).to contain_exactly(recipes[0], recipes[1])
@@ -72,7 +72,7 @@ RSpec.describe RecipeFinderService, type: :service do
 
     it 'returns recipes even if ingredient_ids contains only one ingredient' do
       single_ingredient_id = [ingredients[0].id]
-      service_with_single_id = described_class.new(single_ingredient_id)
+      service_with_single_id = described_class.new(ingredient_ids: single_ingredient_id)
 
       result = service_with_single_id.call
       expect(result).to contain_exactly(recipes[0], recipes[1])
