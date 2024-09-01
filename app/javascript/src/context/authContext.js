@@ -1,35 +1,32 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const email = localStorage.getItem('userEmail');
-    const token = localStorage.getItem('authToken');
-    if (email && token) {
+    // Check if user is authenticated
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
       setIsAuthenticated(true);
-      setUserEmail(email);
+      setUserEmail(user.email);
     }
   }, []);
 
-  const login = (email, token) => {
+  const login = (email) => {
+    // Example login logic (should be replaced with real authentication logic)
     setIsAuthenticated(true);
     setUserEmail(email);
-    localStorage.setItem('userEmail', email);
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('user', JSON.stringify({ email }));
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setUserEmail('');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('authToken');
-    navigate('/');
+    localStorage.removeItem('user');
   };
 
   return (
@@ -39,4 +36,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthProvider, AuthContext };
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

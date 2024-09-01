@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
   const { isAuthenticated, userEmail, logout } = useContext(AuthContext);
   const location = useLocation();
+  const { t } = useTranslation();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,23 +17,27 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto">
             {!isAuthenticated && location.pathname !== '/' && (
               <li className="nav-item">
-                <Link className="nav-link" to="/">Login</Link>
+                <Link className="nav-link" to="/">{t('Login')}</Link>
               </li>
             )}
             {!isAuthenticated && location.pathname === '/' && (
               <li className="nav-item">
-                <Link className="nav-link" to="/register">Register</Link>
+                <Link className="nav-link" to="/register">{t('Register')}</Link>
               </li>
             )}
             {isAuthenticated && (
               <li className="nav-item">
-                <span className="navbar-text">Logged in as: {userEmail}</span>
+                <span className="navbar-text">{t('Logged in as')}: {userEmail}</span>
               </li>
             )}
           </ul>
-          {isAuthenticated && (
-            <button className="btn btn-danger ms-auto" onClick={logout}>Logout</button>
-          )}
+          <div className="ms-auto d-flex">
+            {isAuthenticated && (
+              <>
+                <button className="btn btn-danger" onClick={logout}>{t('Logout')}</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>

@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const REGISTER_USER = gql`
-  mutation RegisterUser($email: String!, $password: String!, $passwordConfirmation: String!) {
-    registerUser(input: { email: $email, password: $password, passwordConfirmation: $passwordConfirmation }) {
-      user {
-        id
-        email
-      }
-      errors
-    }
-  }
-`;
+import { REGISTER_USER } from '../graphql/mutations/registerUser';
 
 const Registration = () => {
   const [email, setEmail] = useState('');
@@ -54,6 +43,7 @@ const Registration = () => {
             <input
               type="email"
               className="form-control"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -63,6 +53,7 @@ const Registration = () => {
             <input
               type="password"
               className="form-control"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -72,6 +63,7 @@ const Registration = () => {
             <input
               type="password"
               className="form-control"
+              placeholder="Confirm Password"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
             />

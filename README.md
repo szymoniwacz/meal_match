@@ -1,6 +1,6 @@
 # MealMatch
 
-MealMatch is a web application built with Ruby on Rails and React, utilizing GraphQL for API interactions and Devise for authentication.
+MealMatch is a web application built with Ruby on Rails and React, utilizing GraphQL for API interactions and Devise for authentication. The application allows users to register, log in, search for recipes based on selected ingredients, and more.
 
 **Note: This application is currently in progress.**
 
@@ -12,6 +12,7 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 - User authentication using Devise
 - GraphQL API for client-server communication
 - React frontend with Bootstrap for styling
+- Recipe search functionality based on selected ingredients
 
 ## Prerequisites
 
@@ -27,7 +28,7 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 
    ```sh
    git clone https://github.com/szymoniwacz/meal_match.git
-   cd base
+   cd meal_match
    ```
 
 2. **Install dependencies:**
@@ -63,13 +64,13 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
    ```ruby
    config.action_mailer.delivery_method = :smtp
    config.action_mailer.smtp_settings = {
-     address: 'smtp.gmail.com',
-     port: 587,
-     domain: 'example.com',
-     user_name: '<your_email>',
-     password: '<your_password>',
-     authentication: 'plain',
-     enable_starttls_auto: true
+      address: 'smtp.gmail.com',
+      port: 587,
+      domain: 'example.com',
+      user_name: '<your_email>',
+      password: '<your_password>',
+      authentication: 'plain',
+      enable_starttls_auto: true
    }
    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
    ```
@@ -91,6 +92,18 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 3. **Access the application:**
 
    Open your browser and navigate to `http://localhost:3000`.
+
+## Recipe Search Functionality
+
+The Recipe Search feature allows users to find recipes based on selected ingredients. Users can type in ingredients, select from suggested options, and then submit the search to find matching recipes.
+
+### How It Works:
+
+- **Ingredient Input:** Users type in the names of ingredients they have.
+- **Suggestions:** As users type, ingredient suggestions appear based on existing ingredients in the database.
+- **Selection:** Users select ingredients from the suggestions list. Selected ingredients are added to the search criteria.
+- **Search:** Upon submitting the search, the application queries the database for recipes that match the selected ingredients.
+- **Results:** Matching recipes are displayed in a sorted table.
 
 ## Testing
 
@@ -125,8 +138,8 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 2. **Clone your fork:**
 
    ```sh
-   git clone https://github.com/yourusername/base.git
-   cd base
+   git clone https://github.com/yourusername/meal_match.git
+   cd meal_match
    ```
 
 3. **Create a new branch:**

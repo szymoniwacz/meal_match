@@ -1,38 +1,28 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useMutation, gql } from '@apollo/client';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!, $rememberMe: Boolean) {
-    loginUser(input: { email: $email, password: $password, rememberMe: $rememberMe }) {
-      user {
-        id
-        email
-      }
-      token
-      errors
-    }
-  }
-`;
+import { useTranslation } from 'react-i18next';
+import { LOGIN_USER } from '../graphql/mutations/loginUser';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [loginUser, { data, error }] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const successMessage = new URLSearchParams(location.search).get('notice');
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (successMessage) {
       setTimeout(() => {
         navigate(location.pathname, { replace: true });
-      }, 3000); // Clear the success message after 3 seconds
+      }, 3000);
     }
   }, [successMessage, navigate, location.pathname]);
 
@@ -41,7 +31,7 @@ const Login = () => {
     const response = await loginUser({ variables: { email, password, rememberMe } });
     if (response.data.loginUser.user) {
       login(response.data.loginUser.user.email, response.data.loginUser.token);
-      navigate('/user-landing', { state: { message: 'Welcome back!' } });
+      navigate('/recipes-finder');
     } else if (response.data.loginUser.errors.length > 0) {
       setErrorMessage(response.data.loginUser.errors.join(', '));
     }
@@ -50,7 +40,7 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
-        <h2>Login</h2>
+        <h2>{t('Login')}</h2>
         {successMessage && (
           <div className="alert alert-success" role="alert">
             {successMessage}
@@ -63,20 +53,22 @@ const Login = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email:</label>
+            <label>{t('Email')}:</label>
             <input
               type="email"
               className="form-control"
               value={email}
+              placeholder="Type your email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>Password:</label>
+            <label>{t('Password')}:</label>
             <input
               type="password"
               className="form-control"
               value={password}
+              placeholder="Type your password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -88,10 +80,10 @@ const Login = () => {
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
-            <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
+            <label className="form-check-label" htmlFor="rememberMe">{t('Remember me')}</label>
           </div>
           <button type="submit" className="btn btn-primary mt-3">
-            Login
+            {t('Login')}
           </button>
         </form>
       </div>

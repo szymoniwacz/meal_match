@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_URI,
 });
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
