@@ -19,20 +19,13 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
-    field :ingredients, [Types::IngredientType], null: false, description: 'Returns a list of ingredients'
-
-    def ingredients
-      Ingredient.all
+    field :ingredients, [Types::IngredientType], null: false,
+                                                 description: 'Returns a list of ingredients filtered by language' do
+      argument :language, String, required: true, description: 'Language code to filter ingredients by.'
     end
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-
-    # TODO: remove me
-    field :test_field, String, null: false,
-                               description: 'An example field added by the generator'
-    def test_field
-      'Hello World!'
+    def ingredients(language: 'en')
+      IngredientFinderService.new(language:).call
     end
   end
 end

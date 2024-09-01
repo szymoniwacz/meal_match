@@ -14,12 +14,13 @@ jest.mock('../LanguageSwitcher', () => {
 });
 
 describe('Navbar Component', () => {
-  const renderWithProviders = (ui, { isAuthenticated, userEmail, logout, route } = {}) => {
+  const renderWithProviders = ({ isAuthenticated, userEmail, logout, route }) => {
+    const recipeFinderRef = React.createRef();  // Added mock recipeFinderRef
     return render(
       <MemoryRouter initialEntries={[route || '/']}>
         <I18nextProvider i18n={i18n}>
           <AuthContext.Provider value={{ isAuthenticated, userEmail, logout }}>
-            {ui}
+            <Navbar recipeFinderRef={recipeFinderRef} />
           </AuthContext.Provider>
         </I18nextProvider>
       </MemoryRouter>
@@ -27,8 +28,7 @@ describe('Navbar Component', () => {
   };
 
   test('renders Navbar with Login link when not authenticated and not on home page', () => {
-    renderWithProviders(<Navbar />, {
-      isAuthenticated: false,
+    renderWithProviders({
       route: '/some-other-page',
     });
 
@@ -38,7 +38,7 @@ describe('Navbar Component', () => {
   });
 
   test('renders Navbar with Register link when not authenticated and on home page', () => {
-    renderWithProviders(<Navbar />, {
+    renderWithProviders({
       isAuthenticated: false,
       route: '/',
     });
@@ -52,7 +52,7 @@ describe('Navbar Component', () => {
   test('renders Navbar with logged in user email and logout button when authenticated', () => {
     const mockLogout = jest.fn();
 
-    renderWithProviders(<Navbar />, {
+    renderWithProviders({
       isAuthenticated: true,
       userEmail: 'test@example.com',
       logout: mockLogout,
@@ -73,7 +73,7 @@ describe('Navbar Component', () => {
       i18n.changeLanguage('fr');
     });
 
-    const { rerender } = renderWithProviders(<Navbar />, {
+    const { rerender } = renderWithProviders({
       isAuthenticated: false,
       route: '/',
     });
@@ -89,7 +89,7 @@ describe('Navbar Component', () => {
       <MemoryRouter initialEntries={['/']}>
         <I18nextProvider i18n={i18n}>
           <AuthContext.Provider value={{ isAuthenticated: true, userEmail: 'test@example.com', logout: jest.fn() }}>
-            <Navbar />
+            <Navbar recipeFinderRef={React.createRef()} />
           </AuthContext.Provider>
         </I18nextProvider>
       </MemoryRouter>

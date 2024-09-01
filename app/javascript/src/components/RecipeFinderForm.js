@@ -9,14 +9,17 @@ import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RecipeFinderForm = forwardRef((props, ref) => {
-  const { t } = useTranslation();
-  const { data, loading, error } = useQuery(GET_INGREDIENTS);
+  const { t, i18n } = useTranslation();
   const [findRecipes] = useMutation(FIND_RECIPES);
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'title', direction: 'ascending' });
+
+  const { data, loading, error } = useQuery(GET_INGREDIENTS, {
+    variables: { language: i18n.language }
+  });
 
   useEffect(() => {
     if (inputValue.length >= 3) {
@@ -64,7 +67,7 @@ const RecipeFinderForm = forwardRef((props, ref) => {
     event.preventDefault();
     try {
       const { data } = await findRecipes({
-        variables: { input: { ingredientIds: selectedIngredients } },
+        variables: { input: { ingredientIds: selectedIngredients, language: i18n.language } },
       });
       setRecipes(data.findRecipes.recipes);
     } catch (error) {

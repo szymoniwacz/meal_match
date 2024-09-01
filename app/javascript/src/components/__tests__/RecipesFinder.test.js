@@ -11,6 +11,14 @@ jest.mock('../RecipeFinderForm', () => {
 });
 
 describe('RecipesFinder Component', () => {
+  const renderWithProviders = () => {
+    return render(
+      <I18nextProvider i18n={i18n}>
+        <RecipesFinder recipeFinderRef={undefined} />
+      </I18nextProvider>
+    );
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -18,11 +26,7 @@ describe('RecipesFinder Component', () => {
   test('renders the RecipesFinder with the correct title in English', () => {
     i18n.changeLanguage('en');
 
-    render(
-      <I18nextProvider i18n={i18n}>
-        <RecipesFinder />
-      </I18nextProvider>
-    );
+    renderWithProviders();
 
     expect(screen.getByRole('heading', { name: /Recipes Finder/i })).toBeInTheDocument();
     expect(screen.getByText(/Mocked RecipeFinderForm/i)).toBeInTheDocument();
@@ -31,11 +35,7 @@ describe('RecipesFinder Component', () => {
   test('renders the RecipesFinder with the correct title in French', () => {
     i18n.changeLanguage('fr');
 
-    render(
-      <I18nextProvider i18n={i18n}>
-        <RecipesFinder />
-      </I18nextProvider>
-    );
+    renderWithProviders();
 
     expect(screen.getByRole('heading', { name: /Chercheur de recettes/i })).toBeInTheDocument();
     expect(screen.getByText(/Mocked RecipeFinderForm/i)).toBeInTheDocument();

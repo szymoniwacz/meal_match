@@ -15,6 +15,7 @@ export const FIND_RECIPES = gql`
         author
         image
         matchingIngredientsCount
+        language
       }
     }
   }

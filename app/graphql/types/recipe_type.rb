@@ -13,5 +13,6 @@ module Types
     field :author, String, null: true
     field :image, String, null: true
     field :matching_ingredients_count, Integer, null: false
+    field :language, String, null: false
   end
 end

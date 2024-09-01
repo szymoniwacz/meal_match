@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RecipeFinderService
-  def initialize(ingredient_ids, language: 'en')
+  def initialize(ingredient_ids:, language: 'en')
     @ingredient_ids = ingredient_ids
     @language = language
   end
@@ -21,7 +21,7 @@ class RecipeFinderService
   def query_string
     {
       ingredients: { id: ingredient_ids },
-      language: language
+      language:,
     }
   end
 

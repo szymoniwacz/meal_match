@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
@@ -25,12 +25,13 @@ describe('RecipeFinderForm Component', () => {
     {
       request: {
         query: GET_INGREDIENTS,
+        variables: { language: 'en' }, // Ensure the correct variable is passed here
       },
       result: {
         data: {
           ingredients: [
-            { id: '1', name: 'Tomato' },
-            { id: '2', name: 'Basil' },
+            { id: '1', name: 'Tomato', language: 'en' },
+            { id: '2', name: 'Basil', language: 'en' },
           ],
         },
       },
@@ -38,7 +39,7 @@ describe('RecipeFinderForm Component', () => {
     {
       request: {
         query: FIND_RECIPES,
-        variables: { input: { ingredientIds: ['1'] } },
+        variables: { input: { ingredientIds: ['1'], language: 'en' } }, // Added language variable
       },
       result: {
         data: {
@@ -56,6 +57,7 @@ describe('RecipeFinderForm Component', () => {
                 author: 'Chef John',
                 image: 'image-url',
                 matchingIngredientsCount: 2,
+                language: 'en',
               },
             ],
           },
@@ -75,6 +77,7 @@ describe('RecipeFinderForm Component', () => {
       {
         request: {
           query: GET_INGREDIENTS,
+          variables: { language: 'en' },
         },
         error: new Error('Failed to fetch ingredients'),
       },
@@ -115,9 +118,7 @@ describe('RecipeFinderForm Component', () => {
 
   test('clears selected ingredients and recipes on language change', async () => {
     const confirmSpy = jest.spyOn(window, 'confirm').mockImplementation(() => true); // Mock confirm to return true
-    const recipeFinderRef = createRef(); // Create a reference
-
-    renderWithProviders(<RecipeFinderForm ref={recipeFinderRef} />, { mocks });
+    renderWithProviders(<RecipeFinderForm />, { mocks });
 
     await waitFor(() => expect(screen.getByPlaceholderText(/Type at least 3 letters/i)).toBeInTheDocument());
 
@@ -136,60 +137,56 @@ describe('RecipeFinderForm Component', () => {
     // Trigger language change
     await act(async () => {
       await i18n.changeLanguage('fr');
-      recipeFinderRef.current.clearSelectedIngredientsAndRecipes(); // Manually clear to ensure it's being called correctly
     });
 
     // Ensure ingredients and recipes are cleared
     await waitFor(() => {
-      expect(screen.queryByText('Tomato')).not.toBeInTheDocument(); // No 'Tomato' should be present
-      expect(screen.queryByText('Tomato Basil Pasta')).not.toBeInTheDocument(); // No 'Tomato Basil Pasta' should be present
+      const ingredientList = screen.queryAllByText('Tomato');
+      const recipeList = screen.queryAllByText('Tomato Basil Pasta');
+
+      expect(ingredientList.length).toBe(0);
+      expect(recipeList.length).toBe(0);
     });
 
     confirmSpy.mockRestore(); // Restore the original confirm behavior
   });
-});
 
-test('handles language change correctly', async () => {
-  // Define the mocks within the test scope
-  const languageChangeMocks = [
-    {
-      request: {
-        query: GET_INGREDIENTS,
-      },
-      result: {
-        data: {
-          ingredients: [
-            { id: '1', name: 'Tomato' },
-            { id: '2', name: 'Basil' },
-          ],
+  test('handles language change correctly', async () => {
+    const mocksForFrench = [
+      {
+        request: {
+          query: GET_INGREDIENTS,
+          variables: { language: 'fr' },
+        },
+        result: {
+          data: {
+            ingredients: [
+              { id: '3', name: 'Tomate', language: 'fr' },
+              { id: '4', name: 'Basilic', language: 'fr' },
+            ],
+          },
         },
       },
-    },
-  ];
+    ];
 
-  // Change the language to French
-  await act(async () => {
-    await i18n.changeLanguage('fr');
-  });
+    await act(async () => {
+      await i18n.changeLanguage('fr');
+    });
 
-  // Render the component with the appropriate mocks
-  renderWithProviders(<RecipeFinderForm />, { mocks: languageChangeMocks });
+    renderWithProviders(<RecipeFinderForm />, { mocks: mocksForFrench });
 
-  // Wait for the loading state to be displayed in French
-  await waitFor(() => {
-    expect(screen.getByText(/Chargement des ingrédients.../i)).toBeInTheDocument();
-  });
+    await waitFor(() => {
+      expect(screen.getByText(/Chargement des ingrédients.../i)).toBeInTheDocument();
+    });
 
-  // Change the language back to English
-  await act(async () => {
-    await i18n.changeLanguage('en');
-  });
+    await act(async () => {
+      await i18n.changeLanguage('en');
+    });
 
-  // Re-render the component with the same mocks
-  renderWithProviders(<RecipeFinderForm />, { mocks: languageChangeMocks });
+    renderWithProviders(<RecipeFinderForm />, { mocks });
 
-  // Wait for the loading state to be displayed in English
-  await waitFor(() => {
-    expect(screen.getByText(/Loading ingredients.../i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Loading ingredients.../i)).toBeInTheDocument();
+    });
   });
 });
