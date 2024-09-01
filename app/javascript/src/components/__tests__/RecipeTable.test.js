@@ -69,8 +69,8 @@ describe('RecipeTable Component', () => {
 
     expect(screen.getByText('Tomato Basil Pasta')).toBeInTheDocument();
     expect(screen.getByText('Garlic Bread')).toBeInTheDocument();
-    expect(screen.getByText('20')).toBeInTheDocument();
-    expect(screen.getByText('15')).toBeInTheDocument();
+    expect(screen.getByText('20 minutes')).toBeInTheDocument();
+    expect(screen.getByText('15 minutes')).toBeInTheDocument();
     expect(screen.getByText('4.5')).toBeInTheDocument();
     expect(screen.getByText('4.7')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();

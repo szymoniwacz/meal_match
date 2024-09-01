@@ -1,34 +1,51 @@
 {
-  "auth.login": "Login",
-  "auth.register": "Register",
-  "auth.password": "Password",
-  "auth.email": "Email",
-  "auth.rememberMe": "Remember me",
-  "auth.loggedInAs": "Logged in as",
-  "auth.logout": "Logout",
-  "auth.welcome": "Welcome!",
-  "auth.placeholder.email": "Type your email",
-  "auth.placeholder.password": "Type your password",
-  "recipes.loadingIngredients": "Loading ingredients...",
-  "recipes.errorLoadingIngredients": "Error loading ingredients",
-  "recipes.search": "Search",
-  "recipes.finderTitle": "Recipes Finder",
-  "ingredientInput.label": "Start typing an ingredient:",
-  "ingredientInput.placeholder": "Type at least 3 letters...",
-  "selectedIngredients.title": "Selected Ingredients:",
-  "registration.success": "Registration successful! You can now log in.",
-  "registration.email": "Email:",
-  "registration.password": "Password:",
-  "registration.confirmPassword": "Confirm Password:",
-  "registration.submit": "Register",
-  "recipeTable.foundRecipes": "Found Recipes",
-  "recipeTable.title": "Title",
-  "recipeTable.cookTime": "Cook Time",
-  "recipeTable.prepTime": "Prep Time",
-  "recipeTable.ratings": "Ratings",
-  "recipeTable.matchingIngredientsCount": "Matching Ingredients Count",
-  "recipeTable.ingredientIds": "Ingredient IDs",
-  "recipeTable.notAvailable": "N/A",
-  "languageSwitcher.english": "English",
-  "languageSwitcher.french": "Français"
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "password": "Password",
+    "email": "Email",
+    "rememberMe": "Remember me",
+    "loggedInAs": "Logged in as",
+    "logout": "Logout",
+    "welcome": "Welcome!",
+    "placeholder": {
+      "email": "Type your email",
+      "password": "Type your password"
+    }
+  },
+  "recipes": {
+    "loadingIngredients": "Loading ingredients...",
+    "errorLoadingIngredients": "Error loading ingredients",
+    "search": "Search",
+    "finderTitle": "Recipes Finder"
+  },
+  "ingredientInput": {
+    "label": "Start typing an ingredient:",
+    "placeholder": "Type at least 3 letters..."
+  },
+  "selectedIngredients": {
+    "title": "Selected Ingredients:"
+  },
+  "registration": {
+    "success": "Registration successful! You can now log in.",
+    "email": "Email:",
+    "password": "Password:",
+    "confirmPassword": "Confirm Password:",
+    "submit": "Register"
+  },
+  "recipeTable": {
+    "foundRecipes": "Found Recipes",
+    "title": "Title",
+    "cookTime": "Cook Time",
+    "prepTime": "Prep Time",
+    "ratings": "Ratings",
+    "matchingIngredientsCount": "Matching Ingredients Count",
+    "ingredientIds": "Ingredient IDs",
+    "notAvailable": "N/A",
+    "minutes": "minutes"
+  },
+  "languageSwitcher": {
+    "english": "English",
+    "french": "Français"
+  }
 }

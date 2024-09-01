@@ -33,10 +33,22 @@ const RecipeTable = ({ sortedRecipes, requestSort, getSortDirectionIcon }) => {
           {sortedRecipes().map((recipe) => (
             <tr key={recipe.id}>
               <td>{recipe.title}</td>
-              <td>{recipe.cookTime !== undefined ? recipe.cookTime : t('recipeTable.notAvailable')}</td>
-              <td>{recipe.prepTime !== undefined ? recipe.prepTime : t('recipeTable.notAvailable')}</td>
+              <td>
+                {recipe.cookTime !== undefined
+                  ? `${recipe.cookTime} ${t('recipeTable.minutes')}`
+                  : t('recipeTable.notAvailable')}
+              </td>
+              <td>
+                {recipe.prepTime !== undefined
+                  ? `${recipe.prepTime} ${t('recipeTable.minutes')}`
+                  : t('recipeTable.notAvailable')}
+              </td>
               <td>{recipe.ratings !== undefined ? recipe.ratings : t('recipeTable.notAvailable')}</td>
-              <td>{recipe.matchingIngredientsCount !== undefined ? recipe.matchingIngredientsCount : t('recipeTable.notAvailable')}</td>
+              <td>
+                {recipe.matchingIngredientsCount !== undefined
+                  ? recipe.matchingIngredientsCount
+                  : t('recipeTable.notAvailable')}
+              </td>
               <td>{recipe.ingredientIds ? recipe.ingredientIds.join(', ') : t('recipeTable.notAvailable')}</td>
             </tr>
           ))}

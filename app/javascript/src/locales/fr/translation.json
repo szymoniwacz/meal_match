@@ -1,34 +1,51 @@
 {
-  "auth.login": "Connexion",
-  "auth.register": "S'inscrire",
-  "auth.password": "Mot de passe",
-  "auth.email": "E-mail",
-  "auth.rememberMe": "Souviens-toi de moi",
-  "auth.loggedInAs": "Connecté en tant que",
-  "auth.logout": "Se déconnecter",
-  "auth.welcome": "Bienvenue!",
-  "auth.placeholder.email": "Tapez votre e-mail",
-  "auth.placeholder.password": "Tapez votre mot de passe",
-  "recipes.loadingIngredients": "Chargement des ingrédients...",
-  "recipes.errorLoadingIngredients": "Erreur lors du chargement des ingrédients",
-  "recipes.search": "Rechercher",
-  "recipes.finderTitle": "Chercheur de recettes",
-  "ingredientInput.label": "Commencez à taper un ingrédient:",
-  "ingredientInput.placeholder": "Tapez au moins 3 lettres...",
-  "selectedIngredients.title": "Ingrédients sélectionnés:",
-  "registration.success": "Inscription réussie ! Vous pouvez maintenant vous connecter.",
-  "registration.email": "E-mail :",
-  "registration.password": "Mot de passe :",
-  "registration.confirmPassword": "Confirmer le mot de passe :",
-  "registration.submit": "S'inscrire",
-  "recipeTable.foundRecipes": "Recettes trouvées",
-  "recipeTable.title": "Titre",
-  "recipeTable.cookTime": "Temps de cuisson",
-  "recipeTable.prepTime": "Temps de préparation",
-  "recipeTable.ratings": "Évaluations",
-  "recipeTable.matchingIngredientsCount": "Nombre d'ingrédients correspondants",
-  "recipeTable.ingredientIds": "Identifiants des ingrédients",
-  "recipeTable.notAvailable": "Indisponible",
-  "languageSwitcher.english": "Anglais",
-  "languageSwitcher.french": "French"
+  "auth": {
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "password": "Mot de passe",
+    "email": "E-mail",
+    "rememberMe": "Souviens-toi de moi",
+    "loggedInAs": "Connecté en tant que",
+    "logout": "Se déconnecter",
+    "welcome": "Bienvenue!",
+    "placeholder": {
+      "email": "Tapez votre e-mail",
+      "password": "Tapez votre mot de passe"
+    }
+  },
+  "recipes": {
+    "loadingIngredients": "Chargement des ingrédients...",
+    "errorLoadingIngredients": "Erreur lors du chargement des ingrédients",
+    "search": "Rechercher",
+    "finderTitle": "Chercheur de recettes"
+  },
+  "ingredientInput": {
+    "label": "Commencez à taper un ingrédient:",
+    "placeholder": "Tapez au moins 3 lettres..."
+  },
+  "selectedIngredients": {
+    "title": "Ingrédients sélectionnés:"
+  },
+  "registration": {
+    "success": "Inscription réussie ! Vous pouvez maintenant vous connecter.",
+    "email": "E-mail :",
+    "password": "Mot de passe :",
+    "confirmPassword": "Confirmer le mot de passe :",
+    "submit": "S'inscrire"
+  },
+  "recipeTable": {
+    "foundRecipes": "Recettes trouvées",
+    "title": "Titre",
+    "cookTime": "Temps de cuisson",
+    "prepTime": "Temps de préparation",
+    "ratings": "Évaluations",
+    "matchingIngredientsCount": "Nombre d'ingrédients correspondants",
+    "ingredientIds": "Identifiants des ingrédients",
+    "notAvailable": "Indisponible",
+    "minutes": "minutes"
+  },
+  "languageSwitcher": {
+    "english": "Anglais",
+    "french": "Français"
+  }
 }
