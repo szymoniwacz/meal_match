@@ -1,12 +1,22 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n';
 import SelectedIngredients from '../SelectedIngredients';
 
 describe('SelectedIngredients Component', () => {
   const handleUnselectIngredient = jest.fn();
 
+  const renderWithTranslation = (component) => {
+    return render(
+      <I18nextProvider i18n={i18n}>
+        {component}
+      </I18nextProvider>
+    );
+  };
+
   test('renders without selected ingredients', () => {
-    render(
+    renderWithTranslation(
       <SelectedIngredients
         selectedIngredients={[]}
         data={{ ingredients: [] }}
@@ -27,7 +37,7 @@ describe('SelectedIngredients Component', () => {
       ],
     };
 
-    render(
+    renderWithTranslation(
       <SelectedIngredients
         selectedIngredients={selectedIngredients}
         data={data}
@@ -48,7 +58,7 @@ describe('SelectedIngredients Component', () => {
       ],
     };
 
-    render(
+    renderWithTranslation(
       <SelectedIngredients
         selectedIngredients={selectedIngredients}
         data={data}
@@ -69,7 +79,7 @@ describe('SelectedIngredients Component', () => {
       ],
     };
 
-    render(
+    renderWithTranslation(
       <SelectedIngredients
         selectedIngredients={selectedIngredients}
         data={data}

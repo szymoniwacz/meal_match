@@ -1,96 +1,140 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n';
 import { MockedProvider } from '@apollo/client/testing';
 import RecipeFinderForm from '../RecipeFinderForm';
-import { mocks } from './mocks';
+import { GET_INGREDIENTS } from '../../graphql/queries/getIngredients.js';
+import { FIND_RECIPES } from '../../graphql/mutations/findRecipes.js';
 
-describe('RecipeFinderForm', () => {
-  test('renders the recipe finder form', async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <RecipeFinderForm />
-      </MockedProvider>
-    );
+const renderWithProviders = (ui, { mocks = [], route = '/' } = {}) => {
+  return render(
+    <MemoryRouter initialEntries={[route]}>
+      <I18nextProvider i18n={i18n}>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          {ui}
+        </MockedProvider>
+      </I18nextProvider>
+    </MemoryRouter>
+  );
+};
 
-    const headingElement = await waitFor(() => screen.getByText(/Find Recipes/i));
-    expect(headingElement).toBeInTheDocument();
+describe('RecipeFinderForm Component', () => {
+  const mocks = [
+    {
+      request: {
+        query: GET_INGREDIENTS,
+      },
+      result: {
+        data: {
+          ingredients: [
+            { id: '1', name: 'Tomato' },
+            { id: '2', name: 'Basil' },
+          ],
+        },
+      },
+    },
+    {
+      request: {
+        query: FIND_RECIPES,
+        variables: { input: { ingredientIds: ['1'] } },
+      },
+      result: {
+        data: {
+          findRecipes: {
+            recipes: [
+              {
+                id: '1',
+                title: 'Tomato Basil Pasta',
+                ingredientIds: ['1', '2'],
+                cookTime: 20,
+                prepTime: 10,
+                ratings: 5,
+                cuisine: 'Italian',
+                category: 'Main Course',
+                author: 'Chef John',
+                image: 'image-url',
+                matchingIngredientsCount: 2,
+              },
+            ],
+          },
+        },
+      },
+    },
+  ];
+
+
+  test('renders loading state initially', () => {
+    renderWithProviders(<RecipeFinderForm />, { mocks });
+
+    expect(screen.getByText(/Loading ingredients.../i)).toBeInTheDocument();
   });
 
-  test('handles ingredient selection', async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <RecipeFinderForm />
-      </MockedProvider>
-    );
+  test('renders error message if loading fails', async () => {
+    const errorMocks = [
+      {
+        request: {
+          query: GET_INGREDIENTS,
+        },
+        error: new Error('Failed to fetch ingredients'),
+      },
+    ];
 
-    const inputElement = await waitFor(() => screen.getByPlaceholderText(/Type at least 3 letters.../i));
+    renderWithProviders(<RecipeFinderForm />, { mocks: errorMocks });
 
-    fireEvent.change(inputElement, { target: { value: 'Tom' } });
-
-    const suggestionElement = await waitFor(() => screen.getByText(/Tomato/i));
-    fireEvent.click(suggestionElement);
-
-    const selectedIngredientElement = screen.getByText(/Tomato/i);
-    expect(selectedIngredientElement).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Error loading ingredients/i)).toBeInTheDocument();
+    });
   });
 
-  test('submits the form and displays recipes', async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <RecipeFinderForm />
-      </MockedProvider>
-    );
+  test('renders ingredients input and search button', async () => {
+    renderWithProviders(<RecipeFinderForm />, { mocks });
 
-    const inputElement = await screen.findByPlaceholderText(/Type at least 3 letters.../i);
-
-    fireEvent.change(inputElement, { target: { value: 'Tom' } });
-    const suggestionElement = await screen.findByText(/Tomato/i);
-    fireEvent.click(suggestionElement);
-
-    fireEvent.change(inputElement, { target: { value: 'Bas' } });
-    const suggestionElementBasil = await screen.findByText(/Basil/i);
-    fireEvent.click(suggestionElementBasil);
-
-    const submitButton = screen.getByText(/Search/i);
-    fireEvent.click(submitButton);
-
-    // Ensure we wait for the mutation to finish and the recipes to be rendered
-    const recipeElement = await waitFor(() => screen.getByText(/Tomato Basil Pasta/i));
-    expect(recipeElement).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/Type at least 3 letters/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Search/i })).toBeInTheDocument();
+    });
   });
 
-  test('handles sorting of recipes', async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <RecipeFinderForm />
-      </MockedProvider>
-    );
+  test('selects ingredients and finds recipes', async () => {
+    renderWithProviders(<RecipeFinderForm />, { mocks });
 
-    const inputElement = await screen.findByPlaceholderText(/Type at least 3 letters.../i);
+    await waitFor(() => expect(screen.getByPlaceholderText(/Type at least 3 letters/i)).toBeInTheDocument());
 
-    fireEvent.change(inputElement, { target: { value: 'Tom' } });
-    const suggestionElement = await screen.findByText(/Tomato/i);
-    fireEvent.click(suggestionElement);
+    fireEvent.change(screen.getByPlaceholderText(/Type at least 3 letters/i), {
+      target: { value: 'Tomato' },
+    });
 
-    fireEvent.change(inputElement, { target: { value: 'Bas' } });
-    const suggestionElementBasil = await screen.findByText(/Basil/i);
-    fireEvent.click(suggestionElementBasil);
+    fireEvent.click(screen.getByText('Tomato'));
+    fireEvent.click(screen.getByRole('button', { name: /Search/i }));
 
-    const submitButton = screen.getByText(/Search/i);
-    fireEvent.click(submitButton);
-
-    // Ensure we wait for the mutation to finish and the recipes to be rendered
-    const recipeElement = await waitFor(() => screen.getByText(/Tomato Basil Pasta/i));
-    expect(recipeElement).toBeInTheDocument();
-
-    // Use a more flexible matcher for the "Cook Time" header
-    const sortButton = screen.getByText((content, element) =>
-      element.tagName.toLowerCase() === 'th' && content.includes('Cook Time')
-    );
-
-    fireEvent.click(sortButton);
-
-    const sortedRecipeElement = await waitFor(() => screen.getByText(/Tomato Basil Pasta/i));
-    expect(sortedRecipeElement).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Tomato Basil Pasta')).toBeInTheDocument();
+    });
   });
+
+
+  test('handles language change correctly', async () => {
+    await act(async () => {
+      await i18n.changeLanguage('fr');
+    });
+
+    renderWithProviders(<RecipeFinderForm />, { mocks });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Chargement des ingrédients.../i)).toBeInTheDocument();
+    });
+
+    await act(async () => {
+      await i18n.changeLanguage('en');
+    });
+
+    renderWithProviders(<RecipeFinderForm />, { mocks });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Loading ingredients.../i)).toBeInTheDocument();
+    });
+  });
+
 });

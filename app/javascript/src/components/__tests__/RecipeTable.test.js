@@ -1,5 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n';
 import RecipeTable from '../RecipeTable';
 
 describe('RecipeTable Component', () => {
@@ -28,8 +30,16 @@ describe('RecipeTable Component', () => {
   const requestSort = jest.fn();
   const getSortDirectionIcon = jest.fn((key) => (key ? '↑' : ''));
 
+  const renderWithTranslation = (component) => {
+    return render(
+      <I18nextProvider i18n={i18n}>
+        {component}
+      </I18nextProvider>
+    );
+  };
+
   test('renders the table headers correctly', () => {
-    render(
+    renderWithTranslation(
       <RecipeTable
         recipes={recipes}
         sortedRecipes={sortedRecipes}
@@ -38,6 +48,7 @@ describe('RecipeTable Component', () => {
       />
     );
 
+    expect(screen.getByText(/Found Recipes/i)).toBeInTheDocument();
     expect(screen.getByText(/Title/i)).toBeInTheDocument();
     expect(screen.getByText(/Cook Time/i)).toBeInTheDocument();
     expect(screen.getByText(/Prep Time/i)).toBeInTheDocument();
@@ -47,7 +58,7 @@ describe('RecipeTable Component', () => {
   });
 
   test('renders the recipe rows correctly', () => {
-    render(
+    renderWithTranslation(
       <RecipeTable
         recipes={recipes}
         sortedRecipes={sortedRecipes}
@@ -69,7 +80,7 @@ describe('RecipeTable Component', () => {
   });
 
   test('calls requestSort when a header is clicked', () => {
-    render(
+    renderWithTranslation(
       <RecipeTable
         recipes={recipes}
         sortedRecipes={sortedRecipes}
@@ -92,7 +103,7 @@ describe('RecipeTable Component', () => {
   });
 
   test('renders sort direction icons correctly', () => {
-    render(
+    renderWithTranslation(
       <RecipeTable
         recipes={recipes}
         sortedRecipes={sortedRecipes}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { useTranslation } from 'react-i18next';
 import IngredientInput from './IngredientInput';
 import SelectedIngredients from './SelectedIngredients';
 import RecipeTable from './RecipeTable';
@@ -8,6 +9,7 @@ import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RecipeFinderForm = () => {
+  const { t } = useTranslation();
   const { data, loading, error } = useQuery(GET_INGREDIENTS);
   const [findRecipes] = useMutation(FIND_RECIPES);
   const [inputValue, setInputValue] = useState('');
@@ -87,12 +89,11 @@ const RecipeFinderForm = () => {
     return '↕';
   };
 
-  if (loading) return <p>Loading ingredients...</p>;
-  if (error) return <p>Error loading ingredients</p>;
+  if (loading) return <p>{t('recipes.loadingIngredients')}</p>;
+  if (error) return <p>{t('recipes.errorLoadingIngredients')}</p>;
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Find Recipes</h2>
       <form onSubmit={handleSubmit}>
         <IngredientInput
           inputValue={inputValue}
@@ -107,7 +108,7 @@ const RecipeFinderForm = () => {
           handleUnselectIngredient={handleUnselectIngredient}
         />
         <button type="submit" className="btn btn-primary">
-          Search
+          {t('recipes.search')}
         </button>
       </form>
 
