@@ -12,6 +12,7 @@ RSpec.describe Mutations::FindRecipes, type: :request do
       {
         input: {
           ingredientIds: ingredients.map(&:id),
+          language: 'en',
         },
       }
     end
@@ -31,6 +32,7 @@ RSpec.describe Mutations::FindRecipes, type: :request do
               category
               author
               image
+              language
             }
           }
         }

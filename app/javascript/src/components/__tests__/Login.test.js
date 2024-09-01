@@ -5,12 +5,8 @@ import { AuthContext } from '../../context/authContext';
 import Login from '../Login';
 import { LOGIN_USER } from '../../graphql/mutations/loginUser';
 import { useNavigate } from 'react-router-dom';
-
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key) => key,
-  }),
-}));
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n';
 
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
@@ -47,16 +43,23 @@ describe('Login Component', () => {
     jest.mocked(useNavigate).mockReturnValue(mockNavigate);
   });
 
-  test('handles login successfully', async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <AuthContext.Provider value={{ login: mockLogin }}>
-          <Login />
-        </AuthContext.Provider>
-      </MockedProvider>
-    );
+  const renderLoginComponent = (language = 'en', mockResponses = mocks) => {
+    i18n.changeLanguage(language);
 
-    // Update placeholders to match what is in the component
+    return render(
+      <I18nextProvider i18n={i18n}>
+        <MockedProvider mocks={mockResponses} addTypename={false}>
+          <AuthContext.Provider value={{ login: mockLogin }}>
+            <Login />
+          </AuthContext.Provider>
+        </MockedProvider>
+      </I18nextProvider>
+    );
+  };
+
+  test('handles login successfully', async () => {
+    renderLoginComponent();
+
     fireEvent.change(screen.getByPlaceholderText('Type your email'), { target: { value: 'test@test.com' } });
     fireEvent.change(screen.getByPlaceholderText('Type your password'), { target: { value: 'password' } });
 
@@ -68,7 +71,21 @@ describe('Login Component', () => {
     });
   });
 
-  test('displays error message on login failure', async () => {
+  test('handles login successfully in French', async () => {
+    renderLoginComponent('fr');
+
+    fireEvent.change(screen.getByPlaceholderText('Tapez votre e-mail'), { target: { value: 'test@test.com' } });
+    fireEvent.change(screen.getByPlaceholderText('Tapez votre mot de passe'), { target: { value: 'password' } });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Connexion' }));
+
+    await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalledWith('test@test.com', 'some-token');
+      expect(mockNavigate).toHaveBeenCalledWith('/recipes-finder');
+    });
+  });
+
+  test('displays error message on login failure in French', async () => {
     const errorMocks = [
       {
         request: {
@@ -80,28 +97,22 @@ describe('Login Component', () => {
             loginUser: {
               user: null,
               token: null,
-              errors: ['Invalid credentials'],
+              errors: ['Identifiants invalides'],
             },
           },
         },
       },
     ];
 
-    render(
-      <MockedProvider mocks={errorMocks} addTypename={false}>
-        <AuthContext.Provider value={{ login: mockLogin }}>
-          <Login />
-        </AuthContext.Provider>
-      </MockedProvider>
-    );
+    renderLoginComponent('fr', errorMocks);
 
-    fireEvent.change(screen.getByPlaceholderText('Type your email'), { target: { value: 'test@test.com' } });
-    fireEvent.change(screen.getByPlaceholderText('Type your password'), { target: { value: 'wrong-password' } });
+    fireEvent.change(screen.getByPlaceholderText('Tapez votre e-mail'), { target: { value: 'test@test.com' } });
+    fireEvent.change(screen.getByPlaceholderText('Tapez votre mot de passe'), { target: { value: 'wrong-password' } });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Login' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Connexion' }));
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
+      expect(screen.getByText('Identifiants invalides')).toBeInTheDocument();
     });
   });
 });

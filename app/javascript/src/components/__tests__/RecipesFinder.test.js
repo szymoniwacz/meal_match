@@ -1,5 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../../i18n';
 import RecipesFinder from '../RecipesFinder';
 
 jest.mock('../RecipeFinderForm', () => {
@@ -9,17 +11,33 @@ jest.mock('../RecipeFinderForm', () => {
 });
 
 describe('RecipesFinder Component', () => {
-  test('renders the Recipes Finder heading', () => {
-    render(<RecipesFinder />);
+  const renderWithProviders = () => {
+    return render(
+      <I18nextProvider i18n={i18n}>
+        <RecipesFinder recipeFinderRef={undefined} />
+      </I18nextProvider>
+    );
+  };
 
-    const headingElement = screen.getByText(/Recipes Finder/i);
-    expect(headingElement).toBeInTheDocument();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('renders the RecipeFinderForm component', () => {
-    render(<RecipesFinder />);
+  test('renders the RecipesFinder with the correct title in English', () => {
+    i18n.changeLanguage('en');
 
-    const formElement = screen.getByText('Mocked RecipeFinderForm');
-    expect(formElement).toBeInTheDocument();
+    renderWithProviders();
+
+    expect(screen.getByRole('heading', { name: /Recipes Finder/i })).toBeInTheDocument();
+    expect(screen.getByText(/Mocked RecipeFinderForm/i)).toBeInTheDocument();
+  });
+
+  test('renders the RecipesFinder with the correct title in French', () => {
+    i18n.changeLanguage('fr');
+
+    renderWithProviders();
+
+    expect(screen.getByRole('heading', { name: /Chercheur de recettes/i })).toBeInTheDocument();
+    expect(screen.getByText(/Mocked RecipeFinderForm/i)).toBeInTheDocument();
   });
 });

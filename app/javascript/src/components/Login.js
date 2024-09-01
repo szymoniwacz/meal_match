@@ -40,7 +40,7 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
-        <h2>{t('Login')}</h2>
+        <h2>{t('auth.login')}</h2>
         {successMessage && (
           <div className="alert alert-success" role="alert">
             {successMessage}
@@ -53,22 +53,22 @@ const Login = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>{t('Email')}:</label>
+            <label>{t('auth.email')}:</label>
             <input
               type="email"
               className="form-control"
               value={email}
-              placeholder="Type your email"
+              placeholder={t('auth.placeholder.email')}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>{t('Password')}:</label>
+            <label>{t('auth.password')}:</label>
             <input
               type="password"
               className="form-control"
               value={password}
-              placeholder="Type your password"
+              placeholder={t('auth.placeholder.password')}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -80,10 +80,10 @@ const Login = () => {
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
-            <label className="form-check-label" htmlFor="rememberMe">{t('Remember me')}</label>
+            <label className="form-check-label" htmlFor="rememberMe">{t('auth.rememberMe')}</label>
           </div>
           <button type="submit" className="btn btn-primary mt-3">
-            {t('Login')}
+            {t('auth.login')}
           </button>
         </form>
       </div>

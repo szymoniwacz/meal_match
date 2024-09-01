@@ -7,6 +7,7 @@ export const FIND_RECIPES = gql`
         id
         title
         ingredientIds
+        ingredientNames
         cookTime
         prepTime
         ratings
@@ -15,6 +16,7 @@ export const FIND_RECIPES = gql`
         author
         image
         matchingIngredientsCount
+        language
       }
     }
   }

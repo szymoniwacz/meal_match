@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { useTranslation } from 'react-i18next';
 import IngredientInput from './IngredientInput';
 import SelectedIngredients from './SelectedIngredients';
 import RecipeTable from './RecipeTable';
@@ -7,14 +8,18 @@ import { GET_INGREDIENTS } from '../graphql/queries/getIngredients';
 import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const RecipeFinderForm = () => {
-  const { data, loading, error } = useQuery(GET_INGREDIENTS);
+const RecipeFinderForm = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
   const [findRecipes] = useMutation(FIND_RECIPES);
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'title', direction: 'ascending' });
+
+  const { data, loading, error } = useQuery(GET_INGREDIENTS, {
+    variables: { language: i18n.language }
+  });
 
   useEffect(() => {
     if (inputValue.length >= 3) {
@@ -27,16 +32,28 @@ const RecipeFinderForm = () => {
     }
   }, [inputValue, data]);
 
+  useImperativeHandle(ref, () => ({
+    clearSelectedIngredientsAndRecipes: () => {
+      setSelectedIngredients([]);
+      setRecipes([]);
+    },
+    confirmLanguageChange: () => {
+      if (selectedIngredients.length > 0 || recipes.length > 0) {
+        return window.confirm(
+          t('recipes.confirmLanguageChange', 'Are you sure? Changing the language will clear the selected ingredients and found recipes.')
+        );
+      }
+      return true;
+    }
+  }));
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
   const handleSuggestionClick = (ingredientId) => {
     if (!selectedIngredients.includes(ingredientId)) {
-      setSelectedIngredients((prevSelected) => {
-        const updatedSelection = [...prevSelected, ingredientId];
-        return updatedSelection;
-      });
+      setSelectedIngredients((prevSelected) => [...prevSelected, ingredientId]);
       setInputValue('');
       setSuggestions([]);
     }
@@ -50,7 +67,7 @@ const RecipeFinderForm = () => {
     event.preventDefault();
     try {
       const { data } = await findRecipes({
-        variables: { input: { ingredientIds: selectedIngredients } },
+        variables: { input: { ingredientIds: selectedIngredients, language: i18n.language } },
       });
       setRecipes(data.findRecipes.recipes);
     } catch (error) {
@@ -87,12 +104,11 @@ const RecipeFinderForm = () => {
     return '↕';
   };
 
-  if (loading) return <p>Loading ingredients...</p>;
-  if (error) return <p>Error loading ingredients</p>;
+  if (loading) return <p>{t('recipes.loadingIngredients')}</p>;
+  if (error) return <p>{t('recipes.errorLoadingIngredients')}</p>;
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Find Recipes</h2>
       <form onSubmit={handleSubmit}>
         <IngredientInput
           inputValue={inputValue}
@@ -107,7 +123,7 @@ const RecipeFinderForm = () => {
           handleUnselectIngredient={handleUnselectIngredient}
         />
         <button type="submit" className="btn btn-primary">
-          Search
+          {t('recipes.search')}
         </button>
       </form>
 
@@ -121,6 +137,8 @@ const RecipeFinderForm = () => {
       )}
     </div>
   );
-};
+});
+
+RecipeFinderForm.displayName = 'RecipeFinderForm';
 
 export default RecipeFinderForm;

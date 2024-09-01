@@ -4,5 +4,6 @@ module Types
   class IngredientType < Types::BaseObject
     field :id, ID, null: false
     field :name, String, null: false
+    field :language, String, null: false
   end
 end

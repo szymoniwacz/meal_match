@@ -8,7 +8,8 @@ module Mutations
 
     def resolve(input:)
       ingredient_ids = input[:ingredient_ids]
-      recipes = RecipeFinderService.new(ingredient_ids).call
+      language = input[:language]
+      recipes = RecipeFinderService.new(ingredient_ids:, language:).call
       { recipes: }
     end
   end

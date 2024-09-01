@@ -17,8 +17,8 @@ RSpec.describe Recipe, type: :model do
 
   describe 'dependent destroy' do
     it 'destroys associated recipe_ingredients when the recipe is destroyed' do
-      recipe = described_class.create!(title: 'Cake')
-      ingredient = Ingredient.create!(name: 'Sugar')
+      recipe = described_class.create!(title: 'Cake', language: 'en')
+      ingredient = Ingredient.create!(name: 'Sugar', language: 'en')
       RecipeIngredient.create!(recipe:, ingredient:)
 
       expect { recipe.destroy }.to change(RecipeIngredient, :count).by(-1)

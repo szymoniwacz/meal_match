@@ -1,45 +1,64 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-const RecipeTable = ({ sortedRecipes, requestSort, getSortDirectionIcon }) => (
-  <div className="mt-5">
-    <h3>Found Recipes</h3>
-    <table className="table table-hover">
-      <thead className="thead-dark">
-        <tr>
-          <th onClick={() => requestSort('title')}>
-            Title {getSortDirectionIcon('title')}
-          </th>
-          <th onClick={() => requestSort('cookTime')}>
-            Cook Time {getSortDirectionIcon('cookTime')}
-          </th>
-          <th onClick={() => requestSort('prepTime')}>
-            Prep Time {getSortDirectionIcon('prepTime')}
-          </th>
-          <th onClick={() => requestSort('ratings')}>
-            Ratings {getSortDirectionIcon('ratings')}
-          </th>
-          <th onClick={() => requestSort('matchingIngredientsCount')}>
-            Matching Ingredients Count {getSortDirectionIcon('matchingIngredientsCount')}
-          </th>
-          <th>Ingredient IDs</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sortedRecipes().map((recipe) => (
-          <tr key={recipe.id}>
-            <td>{recipe.title}</td>
-            <td>{recipe.cookTime !== undefined ? recipe.cookTime : 'N/A'}</td>
-            <td>{recipe.prepTime !== undefined ? recipe.prepTime : 'N/A'}</td>
-            <td>{recipe.ratings !== undefined ? recipe.ratings : 'N/A'}</td>
-            <td>{recipe.matchingIngredientsCount !== undefined ? recipe.matchingIngredientsCount : 'N/A'}</td>
-            <td>{recipe.ingredientIds ? recipe.ingredientIds.join(', ') : 'N/A'}</td>
+const RecipeTable = ({ sortedRecipes, requestSort, getSortDirectionIcon }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="mt-5">
+      <h3>{t('recipeTable.foundRecipes')}</h3>
+      <table className="table table-hover">
+        <thead className="thead-dark">
+          <tr>
+            <th onClick={() => requestSort('title')}>
+              {t('recipeTable.title')} {getSortDirectionIcon('title')}
+            </th>
+            <th onClick={() => requestSort('cookTime')}>
+              {t('recipeTable.cookTime')} {getSortDirectionIcon('cookTime')}
+            </th>
+            <th onClick={() => requestSort('prepTime')}>
+              {t('recipeTable.prepTime')} {getSortDirectionIcon('prepTime')}
+            </th>
+            <th onClick={() => requestSort('ratings')}>
+              {t('recipeTable.ratings')} {getSortDirectionIcon('ratings')}
+            </th>
+            <th onClick={() => requestSort('matchingIngredientsCount')}>
+              {t('recipeTable.matchingIngredientsCount')} {getSortDirectionIcon('matchingIngredientsCount')}
+            </th>
+            <th>{t('recipeTable.ingredients')}</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+        </thead>
+        <tbody>
+          {sortedRecipes().map((recipe) => (
+            <tr key={recipe.id}>
+              <td>{recipe.title}</td>
+              <td>
+                {recipe.cookTime !== undefined
+                  ? `${recipe.cookTime} ${t('recipeTable.minutes')}`
+                  : t('recipeTable.notAvailable')}
+              </td>
+              <td>
+                {recipe.prepTime !== undefined
+                  ? `${recipe.prepTime} ${t('recipeTable.minutes')}`
+                  : t('recipeTable.notAvailable')}
+              </td>
+              <td>{recipe.ratings !== undefined ? recipe.ratings : t('recipeTable.notAvailable')}</td>
+              <td>
+                {recipe.matchingIngredientsCount !== undefined
+                  ? recipe.matchingIngredientsCount
+                  : t('recipeTable.notAvailable')}
+              </td>
+              <td>
+                {recipe.ingredientNames ? recipe.ingredientNames.join(', ') : t('recipeTable.notAvailable')}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 RecipeTable.propTypes = {
   sortedRecipes: PropTypes.oneOfType([
@@ -51,7 +70,7 @@ RecipeTable.propTypes = {
         prepTime: PropTypes.number,
         ratings: PropTypes.number,
         matchingIngredientsCount: PropTypes.number,
-        ingredientIds: PropTypes.arrayOf(PropTypes.string),
+        ingredientNames: PropTypes.arrayOf(PropTypes.string), // Updated to reflect ingredient names
       })
     ),
     PropTypes.func,

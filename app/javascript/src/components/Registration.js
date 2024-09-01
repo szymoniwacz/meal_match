@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { REGISTER_USER } from '../graphql/mutations/registerUser';
 
 const Registration = () => {
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -15,7 +18,7 @@ const Registration = () => {
     e.preventDefault();
     const response = await registerUser({ variables: { email, password, passwordConfirmation } });
     if (response.data.registerUser.user) {
-      setSuccessMessage('Registration successful! You can now log in.');
+      setSuccessMessage(t('registration.success'));
       setErrorMessage('');
     } else if (response.data.registerUser.errors.length > 0) {
       setErrorMessage(response.data.registerUser.errors.join(', '));
@@ -26,7 +29,7 @@ const Registration = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="w-25">
-        <h2>Register</h2>
+        <h2>{t('auth.register')}</h2>
         {successMessage && (
           <div className="alert alert-success" role="alert">
             {successMessage}
@@ -39,37 +42,37 @@ const Registration = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email:</label>
+            <label>{t('auth.email')}:</label>
             <input
               type="email"
               className="form-control"
-              placeholder="Email"
+              placeholder={t('auth.placeholder.email')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>Password:</label>
+            <label>{t('auth.password')}:</label>
             <input
               type="password"
               className="form-control"
-              placeholder="Password"
+              placeholder={t('auth.placeholder.password')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>Confirm Password:</label>
+            <label>{t('registration.confirmPassword')}:</label>
             <input
               type="password"
               className="form-control"
-              placeholder="Confirm Password"
+              placeholder={t('registration.confirmPassword')}
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
             />
           </div>
           <button type="submit" className="btn btn-primary mt-3">
-            Register
+            {t('auth.register')}
           </button>
         </form>
       </div>

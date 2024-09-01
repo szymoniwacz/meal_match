@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :ingredient do
     name { 'Tomato' }
+    language { 'en' }
   end
 end

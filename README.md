@@ -13,6 +13,7 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 - GraphQL API for client-server communication
 - React frontend with Bootstrap for styling
 - Recipe search functionality based on selected ingredients
+- Multi-language support with translations (English and French)
 
 ## Prerequisites
 
@@ -64,13 +65,13 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
    ```ruby
    config.action_mailer.delivery_method = :smtp
    config.action_mailer.smtp_settings = {
-      address: 'smtp.gmail.com',
-      port: 587,
-      domain: 'example.com',
-      user_name: '<your_email>',
-      password: '<your_password>',
-      authentication: 'plain',
-      enable_starttls_auto: true
+   address: 'smtp.gmail.com',
+   port: 587,
+   domain: 'example.com',
+   user_name: '<your_email>',
+   password: '<your_password>',
+   authentication: 'plain',
+   enable_starttls_auto: true
    }
    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
    ```
@@ -104,6 +105,16 @@ The Recipe Search feature allows users to find recipes based on selected ingredi
 - **Selection:** Users select ingredients from the suggestions list. Selected ingredients are added to the search criteria.
 - **Search:** Upon submitting the search, the application queries the database for recipes that match the selected ingredients.
 - **Results:** Matching recipes are displayed in a sorted table.
+
+## Translation Management
+
+MealMatch supports multiple languages, currently including English and French. All texts displayed in the application are fully translatable using the `i18n` gem. The `config/locales` directory contains the translation files for supported languages. Additional languages can be added by including the appropriate translation files.
+
+### How It Works:
+
+- **Language Switching:** Users can switch between English and French using the language switcher in the application.
+- **Translations:** The application leverages the `i18n` gem for managing translations. Text keys are stored in YAML files located in `config/locales/`.
+- **Adding New Languages:** To add support for another language, create a new locale file in `config/locales/`, following the structure of the existing files.
 
 ## Testing
 

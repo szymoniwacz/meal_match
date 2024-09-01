@@ -6,6 +6,7 @@ import client from './apolloClient';
 import App from './App';
 import { AuthProvider } from './context/authContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './i18n';
 
 const container = document.getElementById('root');
 if (container) {
