@@ -1,12 +1,12 @@
-// app/javascript/src/components/Navbar.js
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 
-const Navbar = () => {
+const Navbar = ({ recipeFinderRef }) => {
   const { isAuthenticated, userEmail, logout } = useContext(AuthContext);
   const location = useLocation();
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ const Navbar = () => {
             )}
           </ul>
           <div className="ms-auto d-flex">
-            <LanguageSwitcher />
+            <LanguageSwitcher recipeFinderRef={recipeFinderRef} />
             {isAuthenticated && (
               <>
                 <button className="btn btn-danger" onClick={logout}>{t('auth.logout')}</button>
@@ -45,6 +45,10 @@ const Navbar = () => {
       </div>
     </nav>
   );
+};
+
+Navbar.propTypes = {
+  recipeFinderRef: PropTypes.object.isRequired,
 };
 
 export default Navbar;

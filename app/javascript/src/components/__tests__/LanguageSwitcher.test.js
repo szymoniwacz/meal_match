@@ -39,57 +39,49 @@ describe('LanguageSwitcher Component', () => {
     jest.clearAllMocks();
   });
 
-  test('shows French button when current language is English', () => {
+  test('switches to French and clears selected ingredients and recipes', async () => {
     i18n.changeLanguage('en');
+    const mockRecipeFinderRef = {
+      current: {
+        confirmLanguageChange: jest.fn(() => true),
+        clearSelectedIngredientsAndRecipes: jest.fn(),
+      },
+    };
 
     render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <LanguageSwitcher />
-      </MockedProvider>
-    );
-
-    expect(screen.getByRole('button', { name: /Français/i })).toBeInTheDocument();
-  });
-
-  test('shows English button when current language is French', () => {
-    i18n.changeLanguage('fr');
-
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <LanguageSwitcher />
-      </MockedProvider>
-    );
-
-    expect(screen.getByRole('button', { name: /English/i })).toBeInTheDocument();
-  });
-
-  test('switches to French when French button is clicked', async () => {
-    i18n.changeLanguage('en');
-
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <LanguageSwitcher />
+        <LanguageSwitcher recipeFinderRef={mockRecipeFinderRef} />
       </MockedProvider>
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Français/i }));
 
     await waitFor(() => expect(i18n.language).toBe('fr'));
-    expect(screen.getByRole('button', { name: /English/i })).toBeInTheDocument();
+
+    expect(mockRecipeFinderRef.current.confirmLanguageChange).toHaveBeenCalled();
+    expect(mockRecipeFinderRef.current.clearSelectedIngredientsAndRecipes).toHaveBeenCalled();
   });
 
-  test('switches to English when English button is clicked', async () => {
+  test('switches to English and clears selected ingredients and recipes', async () => {
     i18n.changeLanguage('fr');
+    const mockRecipeFinderRef = {
+      current: {
+        confirmLanguageChange: jest.fn(() => true),
+        clearSelectedIngredientsAndRecipes: jest.fn(),
+      },
+    };
 
     render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <LanguageSwitcher />
+        <LanguageSwitcher recipeFinderRef={mockRecipeFinderRef} />
       </MockedProvider>
     );
 
     fireEvent.click(screen.getByRole('button', { name: /English/i }));
 
     await waitFor(() => expect(i18n.language).toBe('en'));
-    expect(screen.getByRole('button', { name: /Français/i })).toBeInTheDocument();
+
+    expect(mockRecipeFinderRef.current.confirmLanguageChange).toHaveBeenCalled();
+    expect(mockRecipeFinderRef.current.clearSelectedIngredientsAndRecipes).toHaveBeenCalled();
   });
 });

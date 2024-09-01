@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import IngredientInput from './IngredientInput';
@@ -8,7 +8,7 @@ import { GET_INGREDIENTS } from '../graphql/queries/getIngredients';
 import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const RecipeFinderForm = () => {
+const RecipeFinderForm = forwardRef((props, ref) => {
   const { t } = useTranslation();
   const { data, loading, error } = useQuery(GET_INGREDIENTS);
   const [findRecipes] = useMutation(FIND_RECIPES);
@@ -29,16 +29,28 @@ const RecipeFinderForm = () => {
     }
   }, [inputValue, data]);
 
+  useImperativeHandle(ref, () => ({
+    clearSelectedIngredientsAndRecipes: () => {
+      setSelectedIngredients([]);
+      setRecipes([]);
+    },
+    confirmLanguageChange: () => {
+      if (selectedIngredients.length > 0 || recipes.length > 0) {
+        return window.confirm(
+          t('recipes.confirmLanguageChange', 'Are you sure? Changing the language will clear the selected ingredients and found recipes.')
+        );
+      }
+      return true;
+    }
+  }));
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
   const handleSuggestionClick = (ingredientId) => {
     if (!selectedIngredients.includes(ingredientId)) {
-      setSelectedIngredients((prevSelected) => {
-        const updatedSelection = [...prevSelected, ingredientId];
-        return updatedSelection;
-      });
+      setSelectedIngredients((prevSelected) => [...prevSelected, ingredientId]);
       setInputValue('');
       setSuggestions([]);
     }
@@ -122,6 +134,8 @@ const RecipeFinderForm = () => {
       )}
     </div>
   );
-};
+});
+
+RecipeFinderForm.displayName = 'RecipeFinderForm';
 
 export default RecipeFinderForm;
