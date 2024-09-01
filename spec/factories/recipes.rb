@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :recipe do
     title { 'Spaghetti Bolognese' }
+    language { 'en' }
   end
 end
