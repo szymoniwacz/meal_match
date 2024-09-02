@@ -17,28 +17,15 @@ environment.loaders.append('babel', {
   },
 });
 
-const customConfig = {
-  resolve: {
-    fallback: {
-      dgram: false,
-      fs: false,
-      net: false,
-      tls: false,
-      child_process: false,
-    },
-  },
-};
 
-// Ensure compatibility by removing deprecated options
+// Remove deprecated options from configuration if they were added earlier
 environment.config.delete('node.dgram');
 environment.config.delete('node.fs');
 environment.config.delete('node.net');
 environment.config.delete('node.tls');
 environment.config.delete('node.child_process');
 
-// Merge custom configurations into the environment
-environment.config.merge(customConfig);
-
+// Performance optimizations
 environment.config.merge({
   performance: {
     hints: false,
@@ -65,7 +52,7 @@ environment.plugins.append(
   'ProvidePlugin',
   new webpack.ProvidePlugin({
     process: 'process/browser',
-    NODE_OPTIONS: JSON.stringify('--openssl-legacy-provider')
+    NODE_OPTIONS: JSON.stringify('--openssl-legacy-provider'),
   })
 );
 
@@ -73,7 +60,7 @@ environment.plugins.append(
 environment.plugins.append(
   'DefinePlugin',
   new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
   })
 );
 
