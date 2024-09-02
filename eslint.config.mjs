@@ -57,6 +57,7 @@ export default [
     ignores: [
       "vendor/bundle/**",
       "public/packs/js/**",
+      ".yarn/**"
     ],
   },
 ];

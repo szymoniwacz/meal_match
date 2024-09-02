@@ -1,10 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
-    application: './app/javascript/packs/application.js', // Main entry point
+    application: './app/javascript/packs/application.js',
   },
   output: {
     filename: '[name].js',
@@ -14,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/, // Match .js and .jsx files
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -29,11 +30,18 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+        ],
       },
       {
         test: /\.(scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -49,23 +57,22 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'], // Resolve these extensions
+    extensions: ['.js', '.jsx'],
     alias: {
-      // Example: use alias to resolve certain paths more easily
       '@': path.resolve(__dirname, 'app/javascript/src'),
     },
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV || 'development', // Set 'development' as the default value if NODE_ENV is not set
+      NODE_ENV: process.env.NODE_ENV || 'development',
     }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
     }),
   ],
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public'), // Serve static files from this directory
+      directory: path.join(__dirname, 'public'),
     },
     compress: true,
     port: 8080,
