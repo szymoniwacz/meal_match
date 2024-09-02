@@ -76,5 +76,6 @@
       "/config/webpack/",
       "app/javascript/src/components/__tests__/mocks.js"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
