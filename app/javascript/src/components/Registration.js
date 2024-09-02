@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation } from '@apollo/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { REGISTER_USER } from '../graphql/mutations/registerUser';
 
 const Registration = () => {

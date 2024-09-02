@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 
 const Navbar = ({ recipeFinderRef }) => {

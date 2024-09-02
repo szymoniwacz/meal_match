@@ -6,7 +6,6 @@ import SelectedIngredients from './SelectedIngredients';
 import RecipeTable from './RecipeTable';
 import { GET_INGREDIENTS } from '../graphql/queries/getIngredients';
 import { FIND_RECIPES } from '../graphql/mutations/findRecipes';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RecipeFinderForm = forwardRef((props, ref) => {
   const { t, i18n } = useTranslation();
