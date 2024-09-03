@@ -14,9 +14,22 @@ const App = () => {
     <>
       <Navbar recipeFinderRef={recipeFinderRef} />
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Login />} />
-        <Route path="/register" element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Registration />} />
-        <Route path="/recipes-finder" element={<RecipesFinder recipeFinderRef={recipeFinderRef} />} />
+        <Route
+          path="/"
+          element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Login />}
+        />
+        <Route
+          path="/register"
+          element={isAuthenticated ? <Navigate to="/recipes-finder" /> : <Registration />}
+        />
+        <Route
+          path="/recipes-finder"
+          element={isAuthenticated ? <RecipesFinder recipeFinderRef={recipeFinderRef} /> : <Navigate to="/login" />}
+        />
       </Routes>
     </>
   );
