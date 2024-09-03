@@ -17,7 +17,8 @@
     "loadingIngredients": "Chargement des ingrédients...",
     "errorLoadingIngredients": "Erreur lors du chargement des ingrédients",
     "search": "Rechercher",
-    "finderTitle": "Chercheur de recettes"
+    "finderTitle": "Chercheur de recettes",
+    "confirmLanguageChange": "Êtes-vous sûr? Changer la langue effacera les ingrédients sélectionnés et les recettes trouvées."
   },
   "ingredientInput": {
     "label": "Commencez à taper un ingrédient:",

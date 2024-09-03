@@ -17,7 +17,8 @@
     "loadingIngredients": "Loading ingredients...",
     "errorLoadingIngredients": "Error loading ingredients",
     "search": "Search",
-    "finderTitle": "Recipes Finder"
+    "finderTitle": "Recipes Finder",
+    "confirmLanguageChange": "Are you sure? Changing the language will clear the selected ingredients and found recipes."
   },
   "ingredientInput": {
     "label": "Start typing an ingredient:",
