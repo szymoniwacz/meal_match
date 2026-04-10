@@ -1,8 +1,13 @@
 # MealMatch
 
-MealMatch is a web application built with Ruby on Rails and React, utilizing GraphQL for API interactions and Devise for authentication. The application allows users to register, log in, search for recipes based on selected ingredients, and more.
+## About
 
-**Note: This application is currently in progress.**
+MealMatch is a web application built with Ruby on Rails and React, utilizing GraphQL for API interactions and Devise for authentication.  
+The application allows users to register, log in, search for recipes using selected ingredients, and manage their accounts.
+
+## Project Status
+
+:construction: Under construction
 
 ## Features
 
@@ -14,6 +19,17 @@ MealMatch is a web application built with Ruby on Rails and React, utilizing Gra
 - React frontend with Bootstrap for styling
 - Recipe search functionality based on selected ingredients
 - Multi-language support with translations (English and French)
+
+## Tech Stack
+
+- Ruby 3.3
+- Rails 7.1
+- Node.js 14+
+- React (via webpack)
+- PostgreSQL
+- GraphQL
+- Devise (user authentication)
+- Docker, docker-compose (optional for setup)
 
 ## Prerequisites
 
@@ -118,7 +134,7 @@ MealMatch supports multiple languages, currently including English and French. A
 
 ## Testing
 
-**IN PROGRESS**
+:construction: Under construction
 
 ## Deployment
 
