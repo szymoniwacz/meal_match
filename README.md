@@ -1,3 +1,6 @@
+> Full-stack demo app combining Ruby on Rails (backend) and React (frontend) using GraphQL API.  
+> Created as a learning sandbox for authentication, user roles, and modern development stack integration.
+
 # MealMatch
 
 ## About
@@ -7,7 +10,7 @@ The application allows users to register, log in, search for recipes using selec
 
 ## Project Status
 
-:construction: Under construction
+Active demo & learning project. Not intended for production use; open to future improvements and suggestions.
 
 ## Features
 
@@ -19,6 +22,13 @@ The application allows users to register, log in, search for recipes using selec
 - React frontend with Bootstrap for styling
 - Recipe search functionality based on selected ingredients
 - Multi-language support with translations (English and French)
+
+### Typical workflow
+
+- Register or log in
+- Search for recipes by ingredient
+- Switch app language and explore the multi-language UI
+- Manage your profile (change password, email, etc.)
 
 ## Tech Stack
 
@@ -81,13 +91,13 @@ The application allows users to register, log in, search for recipes using selec
    ```ruby
    config.action_mailer.delivery_method = :smtp
    config.action_mailer.smtp_settings = {
-   address: 'smtp.gmail.com',
-   port: 587,
-   domain: 'example.com',
-   user_name: '<your_email>',
-   password: '<your_password>',
-   authentication: 'plain',
-   enable_starttls_auto: true
+     address: 'smtp.gmail.com',
+     port: 587,
+     domain: 'example.com',
+     user_name: '<your_email>',
+     password: '<your_password>',
+     authentication: 'plain',
+     enable_starttls_auto: true
    }
    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
    ```
@@ -108,7 +118,7 @@ The application allows users to register, log in, search for recipes using selec
 
 3. **Access the application:**
 
-   Open your browser and navigate to `http://localhost:3000`.
+   Open your browser and go to `http://localhost:3000`.
 
 ## Recipe Search Functionality
 
@@ -116,25 +126,26 @@ The Recipe Search feature allows users to find recipes based on selected ingredi
 
 ### How It Works:
 
-- **Ingredient Input:** Users type in the names of ingredients they have.
-- **Suggestions:** As users type, ingredient suggestions appear based on existing ingredients in the database.
-- **Selection:** Users select ingredients from the suggestions list. Selected ingredients are added to the search criteria.
-- **Search:** Upon submitting the search, the application queries the database for recipes that match the selected ingredients.
+- **Ingredient Input:** Type the names of ingredients you have.
+- **Suggestions:** As you type, suggestions appear based on ingredients in the database.
+- **Selection:** Select ingredients from the suggestions list. Selected ingredients are added to the search criteria.
+- **Search:** Submit the search to find recipes matching the selected ingredients.
 - **Results:** Matching recipes are displayed in a sorted table.
 
 ## Translation Management
 
-MealMatch supports multiple languages, currently including English and French. All texts displayed in the application are fully translatable using the `i18n` gem. The `config/locales` directory contains the translation files for supported languages. Additional languages can be added by including the appropriate translation files.
+MealMatch supports multiple languages, currently including English and French. All text is fully translatable using the `i18n` gem. The `config/locales` directory contains the translation files for supported languages. Additional languages can be added by including appropriate translation files.
 
 ### How It Works:
 
-- **Language Switching:** Users can switch between English and French using the language switcher in the application.
-- **Translations:** The application leverages the `i18n` gem for managing translations. Text keys are stored in YAML files located in `config/locales/`.
-- **Adding New Languages:** To add support for another language, create a new locale file in `config/locales/`, following the structure of the existing files.
+- **Language Switching:** Switch between English and French using the language switcher in the application.
+- **Translations:** Text keys are managed by the `i18n` gem and stored in YAML files in `config/locales/`.
+- **Adding New Languages:** To add more languages, create new locale files in `config/locales/` following the structure of the existing ones.
 
 ## Testing
 
-:construction: Under construction
+Automated feature and unit tests are planned for critical flows (user registration, recipe search, permissions).  
+Manual exploratory testing was used in initial development.
 
 ## Deployment
 
