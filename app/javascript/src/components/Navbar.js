@@ -14,14 +14,17 @@ const Navbar = ({ recipeFinderRef }) => {
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
         <Link className="navbar-brand" to="/">MealMatch</Link>
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav me-auto">
-            {!isAuthenticated && location.pathname !== '/' && (
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav mr-auto">
+            {!isAuthenticated && location.pathname !== '/login' && location.pathname !== '/' && (
               <li className="nav-item">
-                <Link className="nav-link" to="/">{t('Login')}</Link>
+                <Link className="nav-link" to="/">{t('auth.login')}</Link>
               </li>
             )}
-            {!isAuthenticated && location.pathname === '/' && (
+            {!isAuthenticated && location.pathname !== '/register' && (
               <li className="nav-item">
                 <Link className="nav-link" to="/register">{t('auth.register')}</Link>
               </li>
@@ -32,12 +35,10 @@ const Navbar = ({ recipeFinderRef }) => {
               </li>
             )}
           </ul>
-          <div className="ms-auto d-flex">
+          <div className="form-inline ml-auto">
             <LanguageSwitcher recipeFinderRef={recipeFinderRef} />
             {isAuthenticated && (
-              <>
-                <button className="btn btn-danger" onClick={logout}>{t('auth.logout')}</button>
-              </>
+              <button className="btn btn-danger ml-2" onClick={logout}>{t('auth.logout')}</button>
             )}
           </div>
         </div>
